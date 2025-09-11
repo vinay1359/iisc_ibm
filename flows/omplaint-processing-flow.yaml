@@ -1,0 +1,94 @@
+spec_version: v1
+kind: flow
+name: Complaint_Processing_Workflow
+description: End-to-end automated complaint processing with 6 AI agents
+input_schema:
+  type: object
+  properties:
+    complaint_text:
+      type: string
+      description: Citizen's complaint description
+    citizen_name:
+      type: string  
+      description: Citizen's name
+    phone:
+      type: string
+      description: Contact number
+    location:
+      type: string
+      description: Complaint location
+    is_public:
+      type: boolean
+      description: Whether complaint should be public
+
+steps:
+  - name: complaint_intake
+    agent: Chat_Agent
+    description: Process and categorize incoming complaint
+    input: 
+      - complaint_text
+      - location
+    output: categorized_complaint
+    timeout: 30s
+    
+  - name: complaint_routing
+    agent: Router_Agent
+    description: Route to appropriate department with deadlines
+    input: categorized_complaint
+    output: routed_complaint
+    depends_on: complaint_intake
+    timeout: 15s
+    
+  - name: status_monitoring
+    agent: Tracker_Agent
+    description: Continuous monitoring of complaint status
+    input: routed_complaint
+    output: status_updates
+    depends_on: complaint_routing
+    mode: continuous
+    interval: 300s  # Check every 5 minutes
+    
+  - name: follow_up_management
+    agent: Follow_Agent
+    description: Automated reminders and follow-ups
+    input: status_updates
+    output: reminder_actions
+    depends_on: status_monitoring
+    trigger: 
+      condition: deadline_approaching OR overdue
+      schedule: hourly
+    
+  - name: escalation_management
+    agent: Escalate_Agent
+    description: Automatic escalation for overdue complaints
+    input: 
+      - status_updates
+      - reminder_actions
+    output: escalation_actions
+    depends_on: follow_up_management
+    trigger:
+      condition: overdue_threshold_exceeded
+      
+  - name: analytics_processing
+    agent: Analytics_Agent
+    description: Generate insights and update dashboards
+    input:
+      - categorized_complaint
+      - routed_complaint
+      - status_updates
+    output: analytics_insights
+    depends_on: [complaint_intake, complaint_routing]
+    mode: continuous
+    interval: 600s  # Update every 10 minutes
+
+error_handling:
+  retry_attempts: 3
+  fallback_agent: Chat_Agent
+  notification_channels:
+    - email
+    - slack
+
+monitoring:
+  log_level: INFO
+  metrics_collection: enabled
+  performance_tracking: enabled

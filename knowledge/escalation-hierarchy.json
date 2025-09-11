@@ -1,0 +1,49 @@
+{
+  "escalation_levels": {
+    "level_1": {
+      "title": "Department Head",
+      "description": "First escalation to department leadership",
+      "trigger_hours": 48,
+      "departments": {
+        "electricity": "Chief Engineer, DERC",
+        "water": "CEO, Delhi Jal Board",
+        "road": "Chief Engineer, PWD",
+        "sanitation": "Commissioner, MCD",
+        "health": "Director, Health Services"
+      }
+    },
+    "level_2": {
+      "title": "District Authority",
+      "description": "Escalation to district administration",
+      "trigger_hours": 120,
+      "contacts": {
+        "primary": "District Collector",
+        "secondary": "District Magistrate",
+        "email": "collector@delhi.gov.in",
+        "phone": "011-23392000"
+      }
+    },
+    "level_3": {
+      "title": "State Secretariat",
+      "description": "State government intervention",
+      "trigger_hours": 240,
+      "contacts": {
+        "primary": "Principal Secretary",
+        "secondary": "Chief Secretary",
+        "email": "cs@delhi.gov.in",
+        "phone": "011-23392100"
+      }
+    },
+    "level_4": {
+      "title": "Political Executive",
+      "description": "Ministerial intervention",
+      "trigger_hours": 336,
+      "contacts": {
+        "primary": "Concerned Minister",
+        "secondary": "Chief Minister's Office",
+        "email": "cmo@delhi.gov.in",
+        "phone": "011-23392200"
+      }
+    }
+  }
+}

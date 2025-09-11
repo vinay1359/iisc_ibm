@@ -1,0 +1,59 @@
+{
+  "departments": {
+    "electricity": {
+      "name": "Delhi Electricity Regulatory Commission",
+      "code": "DERC",
+      "email": "complaints@derc.gov.in",
+      "phone": "011-23379920",
+      "emergency": "1912",
+      "address": "Viniyamak Bhavan, C-Block, Shivalik, Malviya Nagar, New Delhi-110017",
+      "head": "Chairperson, DERC",
+      "response_sla": 48,
+      "resolution_sla": 120
+    },
+    "water": {
+      "name": "Delhi Jal Board",
+      "code": "DJB",
+      "email": "complaints@delhijalboard.nic.in",
+      "phone": "1916",
+      "emergency": "1916",
+      "address": "Varunalaya Phase-II, Karol Bagh, New Delhi-110005",
+      "head": "CEO, Delhi Jal Board",
+      "response_sla": 24,
+      "resolution_sla": 72
+    },
+    "road": {
+      "name": "Public Works Department",
+      "code": "PWD",
+      "email": "complaints@delhipwd.gov.in",
+      "phone": "011-23392400",
+      "emergency": "1073",
+      "address": "Old Secretariat, Delhi-110054",
+      "head": "Chief Engineer, PWD",
+      "response_sla": 72,
+      "resolution_sla": 168
+    },
+    "sanitation": {
+      "name": "Municipal Corporation of Delhi",
+      "code": "MCD",
+      "email": "complaints@mcdonline.gov.in",
+      "phone": "1800-11-0095",
+      "emergency": "1073",
+      "address": "Town Hall, Chandni Chowk, Delhi-110006",
+      "head": "Commissioner, MCD",
+      "response_sla": 48,
+      "resolution_sla": 120
+    },
+    "health": {
+      "name": "Department of Health & Family Welfare",
+      "code": "DHFW",
+      "email": "health@delhi.gov.in",
+      "phone": "011-23392155",
+      "emergency": "102",
+      "address": "F-Block, Vikas Bhavan, I.P. Estate, New Delhi-110002",
+      "head": "Director, Health Services",
+      "response_sla": 12,
+      "resolution_sla": 48
+    }
+  }
+}

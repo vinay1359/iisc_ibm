@@ -1,0 +1,40 @@
+spec_version: v1
+kind: tool
+name: urgency_analyzer
+description: Analyzes urgency level of complaints
+type: function
+function:
+  name: assess_urgency
+  description: Determines urgency based on complaint content
+  parameters:
+    type: object
+    properties:
+      text:
+        type: string
+        description: Complaint text
+      category:
+        type: string
+        description: Complaint category
+      location:
+        type: string
+        description: Affected location
+    required:
+      - text
+      - category
+  returns:
+    type: object
+    properties:
+      urgency_level:
+        type: string
+        enum: [CRITICAL, HIGH, MEDIUM, LOW]
+      urgency_score:
+        type: number
+        description: Numeric urgency score 0-100
+      factors:
+        type: array
+        items:
+          type: string
+        description: Factors contributing to urgency assessment
+      estimated_impact:
+        type: string
+        description: Expected impact if not resolved

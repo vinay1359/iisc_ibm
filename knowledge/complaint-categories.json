@@ -1,0 +1,74 @@
+{
+  "categories": {
+    "electricity": {
+      "subcategories": [
+        "power_outage",
+        "voltage_fluctuation", 
+        "transformer_fault",
+        "billing_dispute",
+        "new_connection",
+        "meter_reading",
+        "street_lighting"
+      ],
+      "keywords": ["electricity", "power", "light", "bijli", "current", "voltage", "transformer", "meter"],
+      "typical_resolution_days": 3,
+      "priority_multiplier": 1.2
+    },
+    "water": {
+      "subcategories": [
+        "supply_shortage",
+        "quality_issue",
+        "pipeline_leak",
+        "billing_dispute",
+        "new_connection",
+        "pressure_low",
+        "contamination"
+      ],
+      "keywords": ["water", "pani", "supply", "tap", "pipeline", "leak", "quality", "pressure"],
+      "typical_resolution_days": 2,
+      "priority_multiplier": 1.5
+    },
+    "road": {
+      "subcategories": [
+        "pothole",
+        "traffic_signal",
+        "street_damage",
+        "footpath",
+        "drainage",
+        "construction",
+        "maintenance"
+      ],
+      "keywords": ["road", "street", "pothole", "sadak", "signal", "footpath", "construction"],
+      "typical_resolution_days": 7,
+      "priority_multiplier": 0.8
+    },
+    "sanitation": {
+      "subcategories": [
+        "garbage_collection",
+        "drain_cleaning",
+        "public_toilet",
+        "waste_management",
+        "vector_control",
+        "sweeping",
+        "disposal"
+      ],
+      "keywords": ["garbage", "waste", "cleaning", "safai", "drain", "toilet", "sweeping"],
+      "typical_resolution_days": 3,
+      "priority_multiplier": 1.0
+    },
+    "health": {
+      "subcategories": [
+        "hospital_service",
+        "ambulance",
+        "medicine_shortage",
+        "doctor_availability",
+        "emergency_care",
+        "vaccination",
+        "health_program"
+      ],
+      "keywords": ["hospital", "doctor", "medicine", "health", "ambulance", "treatment", "clinic"],
+      "typical_resolution_days": 1,
+      "priority_multiplier": 2.0
+    }
+  }
+}
