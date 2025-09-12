@@ -1,5 +1,5 @@
 spec_version: v1
-kind: tool
+kind: flow
 name: data_analyzer
 description: Analyzes complaint data for patterns, trends, and insights
 type: function

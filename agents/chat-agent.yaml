@@ -35,7 +35,7 @@ instructions: |
   
   Be thorough, accurate, and empathetic in your analysis.
 
-llm: watsonx/ibm/granite-3-8b-instruct
+llm: watsonx/meta-llama/llama-3-2-90b-vision-instruct
 style: default
 collaborators:
   - Router_Agent
