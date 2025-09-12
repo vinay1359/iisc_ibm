@@ -28,9 +28,48 @@ instructions: |
   
   Be persistent but professional in all follow-up communications.
 
-
 llm: watsonx/meta-llama/llama-3-2-90b-vision-instruct
 style: default
 collaborators:
   - Tracker_Agent
   - Escalate_Agent
+import: knowledge.shared_memory
+
+tool:
+  - reminder_scheduler
+
+on_message:
+  - name: follow_up_complaint
+    description: Send reminders and follow-ups for tracked complaints
+    steps:
+      - action: get_message
+        run: |
+          from knowledge import shared_memory
+          messages = shared_memory.get_messages_for_agent("Follow_Agent")
+          tracked_msgs = [m for m in messages if m["type"] == "tracked_complaint"]
+          if not tracked_msgs:
+              return {"status": "No tracked complaints"}
+          message = tracked_msgs[0]
+          complaint_id = message["content"]["complaint_id"]
+          complaint = shared_memory.get_complaint(complaint_id)
+          return {"complaint": complaint, "message_id": message["id"]}
+        output: complaint_data
+      - action: schedule_reminder
+        input:
+          complaint_id: "{{complaint_data.complaint.id}}"
+          status: "{{complaint_data.complaint.status}}"
+          deadlines: "{{complaint_data.complaint.deadlines}}"
+        output: reminder_info
+      - action: update_followup_status
+        run: |
+          from knowledge import shared_memory
+          complaint = complaint_data["complaint"]
+          complaint["last_reminder_sent"] = str(__import__('datetime').datetime.utcnow())
+          shared_memory.save_complaint(complaint["id"], complaint)
+          shared_memory.mark_message_read(complaint_data["message_id"])
+      - action: respond
+        output: |
+          {
+            "status": "Follow-up reminder sent",
+            "complaint_id": "{{complaint_data.complaint.id}}"
+          }
