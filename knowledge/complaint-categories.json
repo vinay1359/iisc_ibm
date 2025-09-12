@@ -10,9 +10,11 @@
         "meter_reading",
         "street_lighting"
       ],
-      "keywords": ["electricity", "power", "light", "bijli", "current", "voltage", "transformer", "meter"],
+      "keywords": ["electricity", "power", "light", "bijli", "current", "voltage", "transformer", "meter", "बिजली", "करंट", "ट्रांसफॉर्मर"],
       "typical_resolution_days": 3,
-      "priority_multiplier": 1.2
+      "priority_multiplier": 1.2,
+      "department": "electricity",
+      "urgency_indicators": ["no power", "complete blackout", "transformer burst", "live wire"]
     },
     "water": {
       "subcategories": [
@@ -24,9 +26,11 @@
         "pressure_low",
         "contamination"
       ],
-      "keywords": ["water", "pani", "supply", "tap", "pipeline", "leak", "quality", "pressure"],
+      "keywords": ["water", "pani", "supply", "tap", "pipeline", "leak", "quality", "pressure", "पानी", "नल", "पाइप", "रिसाव"],
       "typical_resolution_days": 2,
-      "priority_multiplier": 1.5
+      "priority_multiplier": 1.5,
+      "department": "water",
+      "urgency_indicators": ["no water", "dirty water", "pipeline burst", "sewage mixing"]
     },
     "road": {
       "subcategories": [
@@ -38,37 +42,76 @@
         "construction",
         "maintenance"
       ],
-      "keywords": ["road", "street", "pothole", "sadak", "signal", "footpath", "construction"],
+      "keywords": ["road", "street", "pothole", "sadak", "signal", "footpath", "construction", "सड़क", "गड्ढा", "फुटपाथ"],
       "typical_resolution_days": 7,
-      "priority_multiplier": 0.8
+      "priority_multiplier": 0.8,
+      "department": "road",
+      "urgency_indicators": ["big pothole", "signal not working", "road blocked", "accident prone"]
     },
     "sanitation": {
       "subcategories": [
         "garbage_collection",
-        "drain_cleaning",
+        "drain_cleaning", 
         "public_toilet",
         "waste_management",
         "vector_control",
         "sweeping",
         "disposal"
       ],
-      "keywords": ["garbage", "waste", "cleaning", "safai", "drain", "toilet", "sweeping"],
+      "keywords": ["garbage", "waste", "cleaning", "safai", "drain", "toilet", "sweeping", "कूड़ा", "सफाई", "नाली", "शौचालय"],
       "typical_resolution_days": 3,
-      "priority_multiplier": 1.0
+      "priority_multiplier": 1.0,
+      "department": "sanitation", 
+      "urgency_indicators": ["overflowing drain", "garbage not collected", "toilet blocked", "bad smell"]
     },
     "health": {
       "subcategories": [
         "hospital_service",
         "ambulance",
         "medicine_shortage",
-        "doctor_availability",
+        "doctor_availability", 
         "emergency_care",
         "vaccination",
         "health_program"
       ],
-      "keywords": ["hospital", "doctor", "medicine", "health", "ambulance", "treatment", "clinic"],
+      "keywords": ["hospital", "doctor", "medicine", "health", "ambulance", "treatment", "clinic", "अस्पताल", "डॉक्टर", "दवा", "एम्बुलेंस"],
       "typical_resolution_days": 1,
-      "priority_multiplier": 2.0
+      "priority_multiplier": 2.0,
+      "department": "health",
+      "urgency_indicators": ["emergency", "ambulance needed", "no doctor", "patient serious"]
+    },
+    "general": {
+      "subcategories": [
+        "administrative",
+        "documentation",
+        "certificate", 
+        "license",
+        "pension",
+        "ration_card",
+        "other"
+      ],
+      "keywords": ["certificate", "document", "license", "pension", "ration", "application", "प्रमाण पत्र", "लाइसेंस", "राशन"],
+      "typical_resolution_days": 7,
+      "priority_multiplier": 1.0,
+      "department": "general",
+      "urgency_indicators": ["urgent document", "deadline tomorrow", "court case", "job requirement"]
     }
+  },
+  "language_mappings": {
+    "hindi": {
+      "electricity": ["बिजली", "करंट", "ट्रांसफॉर्मर", "मीटर", "स्ट्रीट लाइट"],
+      "water": ["पानी", "नल", "पाइप", "रिसाव", "गुणवत्ता", "दबाव"],
+      "road": ["सड़क", "गड्ढा", "फुटपाथ", "निर्माण", "ट्रैफिक सिग्नल"],
+      "sanitation": ["कूड़ा", "सफाई", "नाली", "शौचालय", "कचरा संग्रह"],
+      "health": ["अस्पताल", "डॉक्टर", "दवा", "एम्बुलेंस", "इलाज"],
+      "general": ["प्रमाण पत्र", "लाइसेंस", "राशन कार्ड", "पेंशन"]
+    }
+  },
+  "metadata": {
+    "last_updated": "2025-09-12T10:00:00Z",
+    "version": "2.0",
+    "total_categories": 6,
+    "supported_languages": ["hindi", "english"],
+    "ai_model_optimized": true
   }
 }

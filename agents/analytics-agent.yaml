@@ -40,5 +40,31 @@ instructions: |
 llm: watsonx/meta-llama/llama-3-2-90b-vision-instruct
 style: default
 collaborators: []
+import: knowledge.shared_memory
+
 tool:
   - data_analyzer
+
+on_message:
+  - name: generate_insights
+    description: Generate analytics and insights from complaint data
+    steps:
+      - action: load_complaints
+        run: |
+          from knowledge import shared_memory
+          # Load all complaints from shared memory
+          state = shared_memory._load_state()
+          complaints = list(state.get("complaints", {}).values())
+          return {"complaints": complaints}
+        output: complaints_data
+      - action: data_analyzer
+        input:
+          complaints: "{{complaints_data.complaints}}"
+        output: analytics_info
+      - action: respond
+        output: |
+          {
+            "status": "Analytics generated",
+            "summary": "{{analytics_info.summary}}",
+            "metrics": "{{analytics_info.metrics}}"
+          }

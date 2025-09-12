@@ -1,20 +1,23 @@
-[
-  {
-    "date": "2025-08-10",
-    "department": "water",
-    "category": "pipeline",
-    "location": "East Delhi",
-    "status": "resolved",
-    "resolution_time": 36,
-    "satisfaction": 0.9
+{
+  "complaint_history": [],
+  "agent_memory": {
+    "chat_conversations": [],
+    "routing_decisions": [],
+    "tracking_logs": []
   },
-  {
-    "date": "2025-08-12",
-    "department": "electricity",
-    "category": "power outage",
-    "location": "South Delhi",
-    "status": "pending",
-    "resolution_time": 0,
-    "satisfaction": 0.0
+  "system_counters": {
+    "total_complaints": 0,
+    "resolved_complaints": 0,
+    "pending_complaints": 0,
+    "last_complaint_id": 0,
+    "complaints_today": 0,
+    "complaints_this_week": 0,
+    "complaints_this_month": 0
+  },
+  "metadata": {
+    "last_updated": "",
+    "data_version": "2.1",
+    "schema_version": "agent_memory_v1",
+    "ai_agents_active": ["Chat_Agent", "Router_Agent", "Tracker_Agent", "Follow_Agent", "Escalate_Agent", "Analytics_Agent"]
   }
-]
+}

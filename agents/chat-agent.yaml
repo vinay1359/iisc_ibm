@@ -39,7 +39,59 @@ llm: watsonx/meta-llama/llama-3-2-90b-vision-instruct
 style: default
 collaborators:
   - Router_Agent
+import: knowledge.shared_memory
+
 tool:
   - language_detector
   - text_classifier
   - urgency_analyzer
+
+on_message:
+  - name: process_complaint
+    description: Process incoming complaint, analyze and store in shared memory, then notify Router_Agent
+    steps:
+      - action: language_detector
+        input: "{{message.text}}"
+        output: language_info
+      - action: text_classifier
+        input:
+          text: "{{message.text}}"
+          location: "{{message.location}}"
+        output: classification_info
+      - action: urgency_analyzer
+        input:
+          text: "{{message.text}}"
+          category: "{{classification_info.category}}"
+          location: "{{message.location}}"
+        output: urgency_info
+      - action: store_complaint
+        run: |
+          from knowledge import shared_memory
+          complaint_id = message.id if hasattr(message, 'id') else str(hash(message.text))
+          complaint_data = {
+              "id": complaint_id,
+              "text": message.text,
+              "language": language_info.primary_language,
+              "category": classification_info.category,
+              "subcategory": classification_info.subcategory,
+              "urgency": urgency_info.urgency_level,
+              "location": message.location,
+              "status": "RECEIVED",
+              "timestamp": str(__import__('datetime').datetime.utcnow()),
+              "summary": "",
+              "keywords": classification_info.keywords_found
+          }
+          shared_memory.save_complaint(complaint_id, complaint_data)
+          # Send message to Router_Agent
+          shared_memory.add_message(
+              sender_agent="Chat_Agent",
+              receiver_agent="Router_Agent",
+              message_type="new_complaint",
+              content={"complaint_id": complaint_id}
+          )
+      - action: respond
+        output: |
+          {
+            "status": "Complaint processed and routed",
+            "complaint_id": complaint_id
+          }

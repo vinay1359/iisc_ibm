@@ -39,5 +39,46 @@ style: default
 collaborators:
   - Tracker_Agent
   - Follow_Agent
+import: knowledge.shared_memory
+
 tool:
   - urgency_analyzer
+
+on_message:
+  - name: escalate_complaint
+    description: Escalate overdue or critical complaints based on tracking info
+    steps:
+      - action: get_message
+        run: |
+          from knowledge import shared_memory
+          messages = shared_memory.get_messages_for_agent("Escalate_Agent")
+          tracked_msgs = [m for m in messages if m["type"] == "tracked_complaint"]
+          if not tracked_msgs:
+              return {"status": "No tracked complaints"}
+          message = tracked_msgs[0]
+          complaint_id = message["content"]["complaint_id"]
+          complaint = shared_memory.get_complaint(complaint_id)
+          return {"complaint": complaint, "message_id": message["id"]}
+        output: complaint_data
+      - action: urgency_analyzer
+        input:
+          text: "{{complaint_data.complaint.text}}"
+          category: "{{complaint_data.complaint.category}}"
+        output: urgency_info
+      - action: perform_escalation
+        run: |
+          from knowledge import shared_memory
+          complaint = complaint_data["complaint"]
+          urgency = urgency_info.get("urgency_level", "MEDIUM")
+          # Escalate if urgency is CRITICAL or complaint overdue (simplified logic)
+          if urgency == "CRITICAL" or complaint.get("status") == "OVERDUE":
+              complaint["status"] = "ESCALATED"
+              complaint["escalation_timestamp"] = str(__import__('datetime').datetime.utcnow())
+              shared_memory.save_complaint(complaint["id"], complaint)
+          shared_memory.mark_message_read(complaint_data["message_id"])
+      - action: respond
+        output: |
+          {
+            "status": "Escalation processed if needed",
+            "complaint_id": "{{complaint_data.complaint.id}}"
+          }

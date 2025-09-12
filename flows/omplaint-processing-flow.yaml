@@ -1,94 +1,300 @@
 spec_version: v1
 kind: flow
 name: Complaint_Processing_Workflow
-description: End-to-end automated complaint processing with 6 AI agents
+description: End-to-end automated complaint processing with 6 AI agents and memory persistence
+
 input_schema:
   type: object
   properties:
     complaint_text:
       type: string
-      description: Citizen's complaint description
+      description: Citizen's complaint description in any language
+      required: true
     citizen_name:
       type: string  
       description: Citizen's name
+      required: true
     phone:
       type: string
       description: Contact number
+      required: true
     location:
       type: string
       description: Complaint location
+      required: true
     is_public:
       type: boolean
-      description: Whether complaint should be public
+      description: Whether complaint should be visible to community
+      default: false
+
+# Memory configuration for agent communication
+memory:
+  knowledge_base: "citizen_voice_kb"
+  persistent_storage: true
+  shared_memory_enabled: true
+  memory_retention_days: 90
 
 steps:
-  - name: complaint_intake
+  # Step 1: Chat Agent processes and stores complaint
+  - name: complaint_intake_and_analysis
     agent: Chat_Agent
-    description: Process and categorize incoming complaint
+    description: Process complaint with language detection, classification, and urgency analysis
     input: 
       - complaint_text
       - location
-    output: categorized_complaint
+      - citizen_name
+      - phone
+    tools_used:
+      - language_detector
+      - text_classifier
+      - urgency_analyzer
+      - store_complaint_data
+      - update_agent_status
+    actions:
+      - detect_language: true
+      - classify_complaint: true
+      - analyze_urgency: true
+      - generate_complaint_id: true
+      - store_in_memory: true
+    output: 
+      complaint_id: "auto_generated"
+      category: "classified_category"
+      urgency: "analyzed_urgency_level"
+      language: "detected_language"
+      processing_confidence: "classification_confidence"
+    memory_updates:
+      - store_complaint_data
+      - log_chat_conversation
+      - update_system_counters
+    timeout: 45s
+    
+  # Step 2: Router Agent assigns department and deadlines
+  - name: intelligent_routing_and_deadline_setting
+    agent: Router_Agent
+    description: Route to appropriate department with calculated deadlines
+    input: 
+      - complaint_id
+      - category
+      - urgency
+      - location
+    depends_on: complaint_intake_and_analysis
+    tools_used:
+      - get_complaint_data
+      - department_mapper
+      - deadline_calculator
+      - update_complaint_status
+      - add_deadline_tracking
+      - send_message_to_agent
+    actions:
+      - map_to_department: true
+      - calculate_deadlines: true
+      - update_status_to_orange: true
+      - setup_deadline_tracking: true
+      - notify_tracker_agent: true
+    output: 
+      assigned_department: "department_info"
+      acknowledgment_deadline: "calculated_deadline"
+      resolution_deadline: "calculated_deadline"
+      routing_confidence: "routing_confidence"
+    memory_updates:
+      - update_complaint_status
+      - store_routing_decision
+      - add_to_deadline_tracking
+      - send_department_notification
     timeout: 30s
     
-  - name: complaint_routing
-    agent: Router_Agent
-    description: Route to appropriate department with deadlines
-    input: categorized_complaint
-    output: routed_complaint
-    depends_on: complaint_intake
-    timeout: 15s
-    
-  - name: status_monitoring
+  # Step 3: Tracker Agent continuous monitoring
+  - name: continuous_status_and_deadline_monitoring
     agent: Tracker_Agent
-    description: Continuous monitoring of complaint status
-    input: routed_complaint
-    output: status_updates
-    depends_on: complaint_routing
+    description: Continuous monitoring of complaint status and deadlines
+    input: 
+      - complaint_id
+      - assigned_department
+      - deadlines
+    depends_on: intelligent_routing_and_deadline_setting
+    tools_used:
+      - get_messages_for_agent
+      - monitor_status
+      - track_deadlines
+      - update_agent_status
+      - send_message_to_agent
+    actions:
+      - monitor_complaint_status: true
+      - track_deadline_progress: true
+      - identify_at_risk_complaints: true
+      - generate_alerts: true
+      - notify_other_agents: true
     mode: continuous
     interval: 300s  # Check every 5 minutes
+    memory_updates:
+      - update_monitoring_logs
+      - store_status_changes
+      - queue_alert_messages
+    alerts:
+      - approaching_deadlines
+      - overdue_complaints
+      - stuck_complaints
     
-  - name: follow_up_management
+  # Step 4: Follow Agent reminder management  
+  - name: automated_reminder_and_follow_up
     agent: Follow_Agent
-    description: Automated reminders and follow-ups
-    input: status_updates
-    output: reminder_actions
-    depends_on: status_monitoring
-    trigger: 
-      condition: deadline_approaching OR overdue
+    description: Automated reminders and follow-ups based on deadlines
+    input: 
+      - complaint_id
+      - department_info
+      - deadline_progress
+    depends_on: continuous_status_and_deadline_monitoring
+    tools_used:
+      - get_messages_for_agent
+      - schedule_reminder
+      - process_pending_reminders
+      - get_reminder_statistics
+      - update_agent_status
+    actions:
+      - check_for_reminder_triggers: true
+      - schedule_appropriate_reminders: true
+      - process_reminder_queue: true
+      - send_department_communications: true
+    trigger:
+      condition: deadline_approaching OR overdue OR message_received
       schedule: hourly
+    memory_updates:
+      - log_reminders_sent
+      - update_reminder_statistics
+      - store_department_communications
     
-  - name: escalation_management
+  # Step 5: Escalate Agent for overdue handling
+  - name: automatic_escalation_management
     agent: Escalate_Agent
     description: Automatic escalation for overdue complaints
     input: 
-      - status_updates
-      - reminder_actions
-    output: escalation_actions
-    depends_on: follow_up_management
+      - complaint_id
+      - overdue_status
+      - escalation_level
+    depends_on: automated_reminder_and_follow_up
+    tools_used:
+      - get_messages_for_agent
+      - urgency_analyzer
+      - get_complaint_data
+      - update_complaint_status
+      - send_message_to_agent
+    actions:
+      - evaluate_escalation_needs: true
+      - determine_escalation_level: true
+      - trigger_escalation_process: true
+      - notify_higher_authorities: true
     trigger:
-      condition: overdue_threshold_exceeded
+      condition: overdue_threshold_exceeded OR critical_complaint_stuck
+      priority: HIGH
+    memory_updates:
+      - log_escalation_actions
+      - update_escalation_hierarchy
+      - notify_political_authorities
       
-  - name: analytics_processing
+  # Step 6: Analytics Agent for insights and reporting
+  - name: real_time_analytics_and_insights
     agent: Analytics_Agent
-    description: Generate insights and update dashboards
+    description: Generate comprehensive analytics and insights
     input:
-      - categorized_complaint
-      - routed_complaint
-      - status_updates
-    output: analytics_insights
-    depends_on: [complaint_intake, complaint_routing]
+      - complaint_id
+      - processing_data
+      - system_performance
+    depends_on: [complaint_intake_and_analysis, intelligent_routing_and_deadline_setting, continuous_status_and_deadline_monitoring]
+    tools_used:
+      - get_complaint_data
+      - data_analyzer
+      - update_agent_status
+    actions:
+      - update_performance_metrics: true
+      - generate_trend_analysis: true
+      - create_department_scorecards: true
+      - predict_complaint_volumes: true
     mode: continuous
     interval: 600s  # Update every 10 minutes
+    memory_updates:
+      - store_analytics_results
+      - update_performance_dashboards
+      - cache_insights
 
+# Error handling and recovery
 error_handling:
   retry_attempts: 3
+  retry_delay: 30s
   fallback_agent: Chat_Agent
+  error_escalation: true
   notification_channels:
-    - email
-    - slack
+    - system_admin
+    - agent_monitor
+  memory_preservation: true
 
+# Agent communication configuration
+communication:
+  message_queue_enabled: true
+  shared_memory_access: true
+  inter_agent_messaging: true
+  priority_routing: true
+  message_retention_hours: 168  # 1 week
+
+# Memory and persistence settings
+persistence:
+  complaint_data: true
+  agent_conversations: true
+  status_history: true
+  deadline_tracking: true
+  reminder_logs: true
+  escalation_records: true
+  analytics_cache: true
+  retention_policy: "90_days"
+
+# Monitoring and observability
 monitoring:
   log_level: INFO
   metrics_collection: enabled
   performance_tracking: enabled
+  agent_health_checks: true
+  memory_usage_monitoring: true
+  deadline_compliance_tracking: true
+
+# Success criteria for workflow completion
+success_criteria:
+  - complaint_processed: true
+  - department_notified: true
+  - deadline_tracking_active: true
+  - citizen_acknowledgment_sent: true
+  - status_monitoring_enabled: true
+
+# Failure conditions that trigger alerts
+failure_conditions:
+  - complaint_processing_timeout: 5_minutes
+  - department_routing_failure: true
+  - memory_storage_failure: true
+  - agent_communication_breakdown: true
+
+# Output schema for completed workflow
+output_schema:
+  type: object
+  properties:
+    complaint_id:
+      type: string
+      description: Generated complaint ID
+    processing_status:
+      type: string
+      enum: [success, partial_success, failed]
+    assigned_department:
+      type: string
+      description: Department handling the complaint
+    acknowledgment_deadline:
+      type: string
+      format: date-time
+    resolution_deadline:
+      type: string
+      format: date-time
+    current_status:
+      type: string
+      enum: [RED, ORANGE, BLUE, GREEN, BLACK]
+    agent_processing_summary:
+      type: object
+      description: Summary of which agents processed the complaint
+    memory_storage_confirmation:
+      type: boolean
+      description: Confirms data stored in knowledge base
