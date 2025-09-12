@@ -1,0 +1,20 @@
+[
+  {
+    "date": "2025-08-10",
+    "department": "water",
+    "category": "pipeline",
+    "location": "East Delhi",
+    "status": "resolved",
+    "resolution_time": 36,
+    "satisfaction": 0.9
+  },
+  {
+    "date": "2025-08-12",
+    "department": "electricity",
+    "category": "power outage",
+    "location": "South Delhi",
+    "status": "pending",
+    "resolution_time": 0,
+    "satisfaction": 0.0
+  }
+]
