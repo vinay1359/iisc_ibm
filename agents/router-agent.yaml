@@ -42,8 +42,8 @@ instructions: |
      - priority_level: assigned priority
      - escalation_path: next level authority if needed
      - routing_rationale: explanation of routing decision
-
-llm: watsonx/ibm/granite-3-8b-instruct
+     
+llm: watsonx/meta-llama/llama-3-2-90b-vision-instruct
 style: default
 collaborators:
   - Chat_Agent
