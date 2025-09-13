@@ -30,20 +30,23 @@ instructions: |
 
 llm: watsonx/meta-llama/llama-3-2-90b-vision-instruct
 style: default
-collaborators:
-  - Tracker_Agent
-  - Escalate_Agent
-import: knowledge.shared_memory
 
-tool:
+collaborators:
+  - Escalate_Agent
+
+import:
+  - knowledge.shared_memory
+
+tools:
   - reminder_scheduler
+  - deadline_tracker
 
 on_message:
   - name: follow_up_complaint
     description: Send reminders and follow-ups for tracked complaints
     steps:
-      - action: get_message
-        run: |
+      - name: get_message
+        action: |
           from knowledge import shared_memory
           messages = shared_memory.get_messages_for_agent("Follow_Agent")
           tracked_msgs = [m for m in messages if m["type"] == "tracked_complaint"]
@@ -54,22 +57,53 @@ on_message:
           complaint = shared_memory.get_complaint(complaint_id)
           return {"complaint": complaint, "message_id": message["id"]}
         output: complaint_data
-      - action: schedule_reminder
+
+      - name: check_deadlines
+        tool: deadline_tracker
+        input:
+          complaint_id: "{{complaint_data.complaint.id}}"
+          deadlines: "{{complaint_data.complaint.deadlines}}"
+        output: deadline_status
+
+      - name: schedule_reminder
+        tool: reminder_scheduler
         input:
           complaint_id: "{{complaint_data.complaint.id}}"
           status: "{{complaint_data.complaint.status}}"
           deadlines: "{{complaint_data.complaint.deadlines}}"
+          deadline_status: "{{deadline_status}}"
         output: reminder_info
-      - action: update_followup_status
-        run: |
+
+      - name: update_followup_status
+        action: |
           from knowledge import shared_memory
+          from datetime import datetime
+          
           complaint = complaint_data["complaint"]
-          complaint["last_reminder_sent"] = str(__import__('datetime').datetime.utcnow())
+          complaint["last_reminder_sent"] = datetime.utcnow().isoformat()
+          complaint["reminder_info"] = reminder_info
+          complaint["follow_up_count"] = complaint.get("follow_up_count", 0) + 1
+          
           shared_memory.save_complaint(complaint["id"], complaint)
           shared_memory.mark_message_read(complaint_data["message_id"])
-      - action: respond
-        output: |
-          {
-            "status": "Follow-up reminder sent",
-            "complaint_id": "{{complaint_data.complaint.id}}"
+          
+          # If reminder indicates escalation needed, notify Escalate_Agent
+          if reminder_info.get("escalation_needed", False):
+              shared_memory.add_message(
+                  sender_agent="Follow_Agent",
+                  receiver_agent="Escalate_Agent",
+                  message_type="escalation_required",
+                  content={"complaint_id": complaint["id"], "reason": "follow_up_timeout"}
+              )
+        output: update_result
+
+      - name: respond
+        action: |
+          return {
+              "status": "Follow-up reminder processed",
+              "complaint_id": complaint_data["complaint"]["id"],
+              "reminder_type": reminder_info.get("reminder_type"),
+              "escalation_needed": reminder_info.get("escalation_needed", False),
+              "follow_up_count": complaint_data["complaint"].get("follow_up_count", 0) + 1
           }
+        output: response

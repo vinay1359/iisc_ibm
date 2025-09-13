@@ -37,11 +37,19 @@ instructions: |
 
 llm: watsonx/meta-llama/llama-3-2-90b-vision-instruct
 style: default
-collaborators:
-  - Router_Agent
-import: knowledge.shared_memory
 
-tool:
+collaborators:
+   - Router_Agent
+   
+knowledge:
+  - name: citizen-voice-kb
+    search_settings:
+      k: 5
+      score_threshold: 0.7
+import:
+  - knowledge.shared_memory
+
+tools:
   - language_detector
   - text_classifier
   - urgency_analyzer
@@ -50,24 +58,35 @@ on_message:
   - name: process_complaint
     description: Process incoming complaint, analyze and store in shared memory, then notify Router_Agent
     steps:
-      - action: language_detector
-        input: "{{message.text}}"
-        output: language_info
-      - action: text_classifier
+      - name: detect_language
+        tool: language_detector
         input:
           text: "{{message.text}}"
-          location: "{{message.location}}"
+        output: language_info
+
+      - name: classify_complaint
+        tool: text_classifier
+        input:
+          text: "{{message.text}}"
+          location: "{{message.location | default('') }}"
         output: classification_info
-      - action: urgency_analyzer
+
+      - name: analyze_urgency
+        tool: urgency_analyzer
         input:
           text: "{{message.text}}"
           category: "{{classification_info.category}}"
-          location: "{{message.location}}"
+          location: "{{message.location | default('') }}"
         output: urgency_info
-      - action: store_complaint
-        run: |
-          from knowledge import shared_memory
-          complaint_id = message.id if hasattr(message, 'id') else str(hash(message.text))
+
+      - name: store_and_route
+        action: |
+          import knowledge.shared_memory as sm
+          import uuid
+          from datetime import datetime
+          
+          complaint_id = str(uuid.uuid4())[:8]
+          
           complaint_data = {
               "id": complaint_id,
               "text": message.text,
@@ -75,23 +94,80 @@ on_message:
               "category": classification_info.category,
               "subcategory": classification_info.subcategory,
               "urgency": urgency_info.urgency_level,
-              "location": message.location,
-              "status": "RECEIVED",
-              "timestamp": str(__import__('datetime').datetime.utcnow()),
-              "summary": "",
-              "keywords": classification_info.keywords_found
+              "location": getattr(message, 'location', ''),
+              "status": "RED",
+              "timestamp": datetime.now().isoformat(),
+              "citizen_id": getattr(message, 'citizen_id', 'anonymous'),
+              "contact_info": getattr(message, 'contact_info', {}),
+              "keywords": classification_info.keywords_found,
+              "confidence": {
+                  "language": language_info.confidence,
+                  "classification": classification_info.confidence,
+                  "urgency": urgency_info.confidence
+              }
           }
-          shared_memory.save_complaint(complaint_id, complaint_data)
-          # Send message to Router_Agent
-          shared_memory.add_message(
+          
+          sm.save_complaint(complaint_id, complaint_data)
+          
+          sm.add_message(
               sender_agent="Chat_Agent",
-              receiver_agent="Router_Agent",
+              receiver_agent="Router_Agent", 
               message_type="new_complaint",
               content={"complaint_id": complaint_id}
           )
-      - action: respond
-        output: |
-          {
-            "status": "Complaint processed and routed",
-            "complaint_id": complaint_id
+          
+          sm.update_agent_status("Chat_Agent", "active", {
+              "last_processed": complaint_id,
+              "processing_time": datetime.now().isoformat()
+          })
+          
+          return {
+              "complaint_id": complaint_id,
+              "status": "processed_and_routed",
+              "category": classification_info.category,
+              "urgency": urgency_info.urgency_level
           }
+        output: result
+
+      - name: respond_to_citizen
+        action: |
+          response_message = f"""
+          Thank you for your complaint. Here are the details:
+          
+          🆔 Complaint ID: {result.complaint_id}
+          📋 Category: {classification_info.category.title()} 
+          ⚡ Urgency: {urgency_info.urgency_level}
+          🎯 Confidence: {urgency_info.confidence}
+          
+          Your complaint has been processed and routed to the appropriate department.
+          You will receive updates on the status.
+          
+          Status: 🔴 RECEIVED - AI Processing Complete
+          Next: 🟠 ROUTING TO DEPARTMENT
+          """
+          
+          return {
+              "citizen_response": response_message,
+              "complaint_id": result.complaint_id,
+              "next_status": "ORANGE",
+              "processing_complete": True
+          }
+        output: citizen_response
+
+on_error:
+  - name: handle_processing_error
+    action: |
+      import knowledge.shared_memory as sm
+      from datetime import datetime
+      
+      sm.update_agent_status("Chat_Agent", "error", {
+          "error_message": str(error),
+          "error_time": datetime.now().isoformat(),
+          "input_text": getattr(message, 'text', 'unknown')[:100]
+      })
+      
+      return {
+          "error": "Processing failed",
+          "message": "Please try again or contact support",
+          "support_info": "Contact: support@citizen-voice.gov"
+      }

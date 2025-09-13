@@ -45,12 +45,14 @@ instructions: |
      
 llm: watsonx/meta-llama/llama-3-2-90b-vision-instruct
 style: default
-collaborators:
-  - Chat_Agent
-  - Tracker_Agent
-import: knowledge.shared_memory
 
-tool:
+collaborators:
+  - Tracker_Agent
+
+import:
+  - knowledge.shared_memory
+
+tools:
   - department_mapper
   - deadline_calculator
 
@@ -58,11 +60,10 @@ on_message:
   - name: route_complaint
     description: Receive new complaint message, route complaint, update shared memory, notify Tracker_Agent
     steps:
-      - action: get_message
-        run: |
+      - name: get_message
+        action: |
           from knowledge import shared_memory
           messages = shared_memory.get_messages_for_agent("Router_Agent")
-          # Filter for new_complaint messages
           new_complaints = [m for m in messages if m["type"] == "new_complaint"]
           if not new_complaints:
               return {"status": "No new complaints"}
@@ -71,39 +72,48 @@ on_message:
           complaint = shared_memory.get_complaint(complaint_id)
           return {"complaint": complaint, "message_id": message["id"]}
         output: complaint_data
-      - action: map_department
+
+      - name: map_department
+        tool: department_mapper
         input:
           category: "{{complaint_data.complaint.category}}"
           subcategory: "{{complaint_data.complaint.subcategory}}"
           urgency: "{{complaint_data.complaint.urgency}}"
           location: "{{complaint_data.complaint.location}}"
         output: routing_info
-      - action: calculate_deadlines
+
+      - name: calculate_deadlines
+        tool: deadline_calculator
         input:
           urgency: "{{complaint_data.complaint.urgency}}"
           category: "{{complaint_data.complaint.category}}"
         output: deadline_info
-      - action: update_complaint_status
-        run: |
+
+      - name: update_complaint_status
+        action: |
           from knowledge import shared_memory
           complaint = complaint_data["complaint"]
-          complaint["status"] = "ROUTED"
+          complaint["status"] = "ORANGE"
           complaint["assigned_department"] = routing_info["assigned_department"]
           complaint["routing_details"] = routing_info
           complaint["deadlines"] = deadline_info
           shared_memory.save_complaint(complaint["id"], complaint)
-          # Mark message read
           shared_memory.mark_message_read(complaint_data["message_id"])
-          # Send message to Tracker_Agent
+          
           shared_memory.add_message(
               sender_agent="Router_Agent",
               receiver_agent="Tracker_Agent",
               message_type="routed_complaint",
               content={"complaint_id": complaint["id"]}
           )
-      - action: respond
-        output: |
-          {
-            "status": "Complaint routed and Tracker_Agent notified",
-            "complaint_id": "{{complaint_data.complaint.id}}"
+        output: update_result
+
+      - name: respond
+        action: |
+          return {
+              "status": "Complaint routed and Tracker_Agent notified",
+              "complaint_id": complaint_data["complaint"]["id"],
+              "department": routing_info["assigned_department"],
+              "deadlines": deadline_info
           }
+        output: response

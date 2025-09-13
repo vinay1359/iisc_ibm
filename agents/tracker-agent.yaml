@@ -37,13 +37,14 @@ instructions: |
 
 llm: watsonx/meta-llama/llama-3-2-90b-vision-instruct
 style: default
+
 collaborators:
   - Follow_Agent
-  - Escalate_Agent
-  - Analytics_Agent
-import: knowledge.shared_memory
 
-tool:
+import:
+  - knowledge.shared_memory
+
+tools:
   - status_monitor
   - deadline_tracker
   - data_analyzer
@@ -53,8 +54,8 @@ on_message:
   - name: track_complaint
     description: Monitor routed complaints, update status, notify Escalate_Agent and Follow_Agent
     steps:
-      - action: get_message
-        run: |
+      - name: get_message
+        action: |
           from knowledge import shared_memory
           messages = shared_memory.get_messages_for_agent("Tracker_Agent")
           routed_msgs = [m for m in messages if m["type"] == "routed_complaint"]
@@ -65,29 +66,42 @@ on_message:
           complaint = shared_memory.get_complaint(complaint_id)
           return {"complaint": complaint, "message_id": message["id"]}
         output: complaint_data
-      - action: monitor_status
+
+      - name: monitor_status
+        tool: status_monitor
         input:
           complaint_id: "{{complaint_data.complaint.id}}"
           status: "{{complaint_data.complaint.status}}"
         output: status_info
-      - action: track_deadlines
+
+      - name: track_deadlines
+        tool: deadline_tracker
         input:
           complaint_id: "{{complaint_data.complaint.id}}"
           deadlines: "{{complaint_data.complaint.deadlines}}"
         output: deadline_info
-      - action: analyze_data
+
+      - name: analyze_data
+        tool: data_analyzer
         input:
           complaint_id: "{{complaint_data.complaint.id}}"
         output: analytics_info
-      - action: update_complaint_status
-        run: |
+
+      - name: update_complaint_status
+        action: |
           from knowledge import shared_memory
           complaint = complaint_data["complaint"]
           complaint["status"] = status_info.get("updated_status", complaint["status"])
           complaint["last_tracked"] = str(__import__('datetime').datetime.utcnow())
+          complaint["tracking_info"] = {
+              "status_info": status_info,
+              "deadline_info": deadline_info,
+              "analytics_info": analytics_info
+          }
+          
           shared_memory.save_complaint(complaint["id"], complaint)
           shared_memory.mark_message_read(complaint_data["message_id"])
-          # Notify Escalate_Agent and Follow_Agent
+          
           shared_memory.add_message(
               sender_agent="Tracker_Agent",
               receiver_agent="Escalate_Agent",
@@ -100,9 +114,21 @@ on_message:
               message_type="tracked_complaint",
               content={"complaint_id": complaint["id"]}
           )
-      - action: respond
-        output: |
-          {
-            "status": "Complaint tracked and notifications sent",
-            "complaint_id": "{{complaint_data.complaint.id}}"
+          shared_memory.add_message(
+              sender_agent="Tracker_Agent",
+              receiver_agent="Analytics_Agent",
+              message_type="tracked_complaint",
+              content={"complaint_id": complaint["id"]}
+          )
+        output: update_result
+
+      - name: respond
+        action: |
+          return {
+              "status": "Complaint tracked and notifications sent",
+              "complaint_id": complaint_data["complaint"]["id"],
+              "current_status": status_info.get("updated_status"),
+              "deadline_status": deadline_info.get("status"),
+              "notifications_sent": ["Escalate_Agent", "Follow_Agent", "Analytics_Agent"]
           }
+        output: response
