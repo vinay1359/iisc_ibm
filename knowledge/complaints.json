@@ -9,15 +9,11 @@
     "total_complaints": 0,
     "resolved_complaints": 0,
     "pending_complaints": 0,
-    "last_complaint_id": 0,
-    "complaints_today": 0,
-    "complaints_this_week": 0,
-    "complaints_this_month": 0
+    "last_complaint_id": 0
   },
   "metadata": {
     "last_updated": "",
-    "data_version": "2.1",
-    "schema_version": "agent_memory_v1",
-    "ai_agents_active": ["Chat_Agent", "Router_Agent", "Tracker_Agent", "Follow_Agent", "Escalate_Agent", "Analytics_Agent"]
+    "schema_version": "v2.0",
+    "compatible_agents": ["Chat_Agent", "Router_Agent", "Tracker_Agent", "Follow_Agent", "Escalate_Agent", "Analytics_Agent"]
   }
 }

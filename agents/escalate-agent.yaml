@@ -36,49 +36,101 @@ instructions: |
 
 llm: watsonx/meta-llama/llama-3-2-90b-vision-instruct
 style: default
-collaborators:
-  - Tracker_Agent
-  - Follow_Agent
-import: knowledge.shared_memory
 
-tool:
+collaborators:
+  - Analytics_Agent
+
+import:
+  - knowledge.shared_memory
+
+tools:
   - urgency_analyzer
+  - deadline_tracker
 
 on_message:
   - name: escalate_complaint
     description: Escalate overdue or critical complaints based on tracking info
     steps:
-      - action: get_message
-        run: |
+      - name: get_message
+        action: |
           from knowledge import shared_memory
           messages = shared_memory.get_messages_for_agent("Escalate_Agent")
-          tracked_msgs = [m for m in messages if m["type"] == "tracked_complaint"]
-          if not tracked_msgs:
-              return {"status": "No tracked complaints"}
-          message = tracked_msgs[0]
+          # Handle both tracked_complaint and escalation_required messages
+          escalation_msgs = [m for m in messages if m["type"] in ["tracked_complaint", "escalation_required"]]
+          if not escalation_msgs:
+              return {"status": "No escalation messages"}
+          message = escalation_msgs[0]
           complaint_id = message["content"]["complaint_id"]
           complaint = shared_memory.get_complaint(complaint_id)
-          return {"complaint": complaint, "message_id": message["id"]}
+          return {"complaint": complaint, "message_id": message["id"], "message_type": message["type"]}
         output: complaint_data
-      - action: urgency_analyzer
+
+      - name: analyze_urgency
+        tool: urgency_analyzer
         input:
           text: "{{complaint_data.complaint.text}}"
           category: "{{complaint_data.complaint.category}}"
         output: urgency_info
-      - action: perform_escalation
-        run: |
+
+      - name: check_deadlines
+        tool: deadline_tracker
+        input:
+          complaint_id: "{{complaint_data.complaint.id}}"
+          deadlines: "{{complaint_data.complaint.deadlines}}"
+        output: deadline_status
+
+      - name: perform_escalation
+        action: |
           from knowledge import shared_memory
+          from datetime import datetime
+          
           complaint = complaint_data["complaint"]
           urgency = urgency_info.get("urgency_level", "MEDIUM")
-          # Escalate if urgency is CRITICAL or complaint overdue (simplified logic)
-          if urgency == "CRITICAL" or complaint.get("status") == "OVERDUE":
+          deadline_overdue = deadline_status.get("overdue", False)
+          follow_up_count = complaint.get("follow_up_count", 0)
+          message_type = complaint_data["message_type"]
+          
+          # Determine if escalation is needed
+          escalation_needed = False
+          escalation_reason = ""
+          
+          if urgency == "CRITICAL":
+              escalation_needed = True
+              escalation_reason = "Critical urgency complaint"
+          elif deadline_overdue:
+              escalation_needed = True
+              escalation_reason = "Deadline overdue"
+          elif follow_up_count >= 3:
+              escalation_needed = True
+              escalation_reason = "Multiple follow-ups with no response"
+          elif message_type == "escalation_required":
+              escalation_needed = True
+              escalation_reason = "Explicit escalation request"
+          
+          if escalation_needed:
               complaint["status"] = "ESCALATED"
-              complaint["escalation_timestamp"] = str(__import__('datetime').datetime.utcnow())
+              complaint["escalation_timestamp"] = datetime.utcnow().isoformat()
+              complaint["escalation_reason"] = escalation_reason
+              complaint["escalation_level"] = complaint.get("escalation_level", 0) + 1
+              
               shared_memory.save_complaint(complaint["id"], complaint)
+          
           shared_memory.mark_message_read(complaint_data["message_id"])
-      - action: respond
-        output: |
-          {
-            "status": "Escalation processed if needed",
-            "complaint_id": "{{complaint_data.complaint.id}}"
+          
+          return {
+              "escalation_performed": escalation_needed,
+              "escalation_reason": escalation_reason,
+              "escalation_level": complaint.get("escalation_level", 0)
           }
+        output: escalation_result
+
+      - name: respond
+        action: |
+          return {
+              "status": "Escalation processing complete",
+              "complaint_id": complaint_data["complaint"]["id"],
+              "escalated": escalation_result["escalation_performed"],
+              "reason": escalation_result.get("escalation_reason", "No escalation needed"),
+              "escalation_level": escalation_result.get("escalation_level", 0)
+          }
+        output: response

@@ -36,35 +36,77 @@ instructions: |
   
   Focus on insights that drive better governance and improved citizen services.
 
-
 llm: watsonx/meta-llama/llama-3-2-90b-vision-instruct
 style: default
-collaborators: []
-import: knowledge.shared_memory
 
-tool:
+
+import:
+  - knowledge.shared_memory
+
+tools:
   - data_analyzer
 
 on_message:
   - name: generate_insights
     description: Generate analytics and insights from complaint data
     steps:
-      - action: load_complaints
-        run: |
+      - name: get_message
+        action: |
+          from knowledge import shared_memory
+          messages = shared_memory.get_messages_for_agent("Analytics_Agent")
+          tracked_msgs = [m for m in messages if m["type"] == "tracked_complaint"]
+          if not tracked_msgs:
+              return {"status": "No tracked complaints for analytics"}
+          message = tracked_msgs[0]
+          complaint_id = message["content"]["complaint_id"]
+          return {"complaint_id": complaint_id, "message_id": message["id"]}
+        output: message_data
+
+      - name: load_complaints
+        action: |
           from knowledge import shared_memory
           # Load all complaints from shared memory
           state = shared_memory._load_state()
           complaints = list(state.get("complaints", {}).values())
-          return {"complaints": complaints}
+          return {"complaints": complaints, "total_count": len(complaints)}
         output: complaints_data
-      - action: data_analyzer
+
+      - name: analyze_data
+        tool: data_analyzer
         input:
           complaints: "{{complaints_data.complaints}}"
+          focus_complaint_id: "{{message_data.complaint_id}}"
         output: analytics_info
-      - action: respond
-        output: |
-          {
-            "status": "Analytics generated",
-            "summary": "{{analytics_info.summary}}",
-            "metrics": "{{analytics_info.metrics}}"
+
+      - name: update_analytics
+        action: |
+          from knowledge import shared_memory
+          from datetime import datetime
+          
+          # Store analytics results in shared memory
+          analytics_data = {
+              "timestamp": datetime.utcnow().isoformat(),
+              "total_complaints": complaints_data["total_count"],
+              "analytics_summary": analytics_info.get("summary", {}),
+              "metrics": analytics_info.get("metrics", {}),
+              "insights": analytics_info.get("insights", []),
+              "recommendations": analytics_info.get("recommendations", [])
           }
+          
+          shared_memory.save_analytics(analytics_data)
+          shared_memory.mark_message_read(message_data["message_id"])
+          
+          return analytics_data
+        output: stored_analytics
+
+      - name: respond
+        action: |
+          return {
+              "status": "Analytics generated successfully",
+              "summary": stored_analytics["analytics_summary"],
+              "metrics": stored_analytics["metrics"],
+              "total_complaints_analyzed": stored_analytics["total_complaints"],
+              "insights_count": len(stored_analytics["insights"]),
+              "recommendations_count": len(stored_analytics["recommendations"])
+          }
+        output: response

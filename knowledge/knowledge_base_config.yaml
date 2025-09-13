@@ -1,0 +1,37 @@
+spec_version: v1
+kind: knowledge_base
+name: citizen-voice-kb
+description: Knowledge base for Citizen Voice AI Government Accountability System
+
+documents:
+  - path: "./complaint-categories.json"
+    type: "json"
+    metadata:
+      category: "complaint_classification"
+      description: "Government service categories and keywords for complaint routing"
+  - path: "./department-contacts.json"
+    type: "json"
+    metadata:
+      category: "department_info"
+      description: "Government department contact information and SLAs"
+  - path: "./escalation-hierarchy.json"
+    type: "json"
+    metadata:
+      category: "escalation_rules"
+      description: "Escalation hierarchy and authority levels"
+  - path: "./government-procedures.md"
+    type: "markdown"
+    metadata:
+      category: "procedures"
+      description: "Government procedures and workflows"
+  - path: "./shared_memory.py"
+    type: "python"
+    metadata:
+      category: "agent_memory"
+      description: "Shared memory system for agent communication"
+
+vector_index:
+  embeddings_model_name: "sentence-transformers/all-MiniLM-L6-v2"
+  retrieval_k: 5
+  chunk_size: 1000
+  chunk_overlap: 200
