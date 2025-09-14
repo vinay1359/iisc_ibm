@@ -1,0 +1,66 @@
+[
+  {
+    "timestamp": "2025-09-14T16:50:52.725762",
+    "text_sample": "The road in front of my house is full of potholes and needs to be repaired urgently.",
+    "urgency_level": "MEDIUM",
+    "contributing_factors": [
+      "keyword: urgent"
+    ]
+  },
+  {
+    "timestamp": "2025-09-14T16:51:03.555180",
+    "text_sample": "The road in front of my house is full of potholes and needs to be repaired urgently.",
+    "urgency_level": "MEDIUM",
+    "contributing_factors": [
+      "keyword: urgent"
+    ]
+  },
+  {
+    "timestamp": "2025-09-14T16:51:36.631135",
+    "text_sample": "The streetlights in my area have not been working for the past three days.",
+    "urgency_level": "LOW",
+    "contributing_factors": []
+  },
+  {
+    "timestamp": "2025-09-14T16:52:19.788228",
+    "text_sample": "The streetlights in my area have not been working for the past three days.",
+    "urgency_level": "LOW",
+    "contributing_factors": []
+  },
+  {
+    "timestamp": "2025-09-14T16:56:32.203331",
+    "text_sample": "There is a major water leakage on the main road, causing a lot of water wastage.",
+    "urgency_level": "MEDIUM",
+    "contributing_factors": []
+  },
+  {
+    "timestamp": "2025-09-14T16:56:57.710496",
+    "text_sample": "The streetlights in my area have not been working for the past three days.",
+    "urgency_level": "LOW",
+    "contributing_factors": []
+  },
+  {
+    "timestamp": "2025-09-14T17:01:42.393045",
+    "text_sample": "There is a major water leakage on the main road, causing a lot of water wastage.",
+    "urgency_level": "MEDIUM",
+    "contributing_factors": []
+  },
+  {
+    "timestamp": "2025-09-14T17:01:50.632124",
+    "text_sample": "There is a major water leakage on the main road, causing a lot of water wastage.",
+    "urgency_level": "MEDIUM",
+    "contributing_factors": []
+  },
+  {
+    "timestamp": "2025-09-14T17:04:23.258310",
+    "text_sample": "The streetlights in my area have not been working for the past three days.",
+    "urgency_level": "LOW",
+    "contributing_factors": []
+  },
+  {
+    "timestamp": "2025-09-14T17:08:57.720114",
+    "text_sample": "The streetlights in my area have not been working for the past three days.",
+    "urgency_level": "LOW",
+    "contributing_factors": []
+  }
+]
