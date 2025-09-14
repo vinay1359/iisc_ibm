@@ -1,0 +1,97 @@
+[
+  {
+    "timestamp": "2025-09-14T16:50:52.722247",
+    "text_sample": "The road in front of my house is full of potholes and needs to be repaired urgently.",
+    "classified_category": "road",
+    "confidence": 1.0,
+    "keywords_found": [
+      "road",
+      "pothole"
+    ]
+  },
+  {
+    "timestamp": "2025-09-14T16:51:03.553155",
+    "text_sample": "The road in front of my house is full of potholes and needs to be repaired urgently.",
+    "classified_category": "road",
+    "confidence": 1.0,
+    "keywords_found": [
+      "road",
+      "pothole"
+    ]
+  },
+  {
+    "timestamp": "2025-09-14T16:51:36.630122",
+    "text_sample": "The streetlights in my area have not been working for the past three days.",
+    "classified_category": "road",
+    "confidence": 0.5454545454545454,
+    "keywords_found": [
+      "street"
+    ]
+  },
+  {
+    "timestamp": "2025-09-14T16:52:19.786218",
+    "text_sample": "The streetlights in my area have not been working for the past three days.",
+    "classified_category": "road",
+    "confidence": 0.5454545454545454,
+    "keywords_found": [
+      "street"
+    ]
+  },
+  {
+    "timestamp": "2025-09-14T16:56:32.199331",
+    "text_sample": "There is a major water leakage on the main road, causing a lot of water wastage.",
+    "classified_category": "water",
+    "confidence": 0.7297297297297298,
+    "keywords_found": [
+      "water",
+      "leak"
+    ]
+  },
+  {
+    "timestamp": "2025-09-14T16:56:57.708496",
+    "text_sample": "The streetlights in my area have not been working for the past three days.",
+    "classified_category": "road",
+    "confidence": 0.5454545454545454,
+    "keywords_found": [
+      "street"
+    ]
+  },
+  {
+    "timestamp": "2025-09-14T17:01:42.387998",
+    "text_sample": "There is a major water leakage on the main road, causing a lot of water wastage.",
+    "classified_category": "water",
+    "confidence": 0.7297297297297298,
+    "keywords_found": [
+      "water",
+      "leak"
+    ]
+  },
+  {
+    "timestamp": "2025-09-14T17:01:50.630551",
+    "text_sample": "There is a major water leakage on the main road, causing a lot of water wastage.",
+    "classified_category": "water",
+    "confidence": 0.7297297297297298,
+    "keywords_found": [
+      "water",
+      "leak"
+    ]
+  },
+  {
+    "timestamp": "2025-09-14T17:04:23.253292",
+    "text_sample": "The streetlights in my area have not been working for the past three days.",
+    "classified_category": "road",
+    "confidence": 0.5454545454545454,
+    "keywords_found": [
+      "street"
+    ]
+  },
+  {
+    "timestamp": "2025-09-14T17:08:57.714944",
+    "text_sample": "The streetlights in my area have not been working for the past three days.",
+    "classified_category": "road",
+    "confidence": 0.5454545454545454,
+    "keywords_found": [
+      "street"
+    ]
+  }
+]

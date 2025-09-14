@@ -1,19 +1,1402 @@
 {
-  "complaint_history": [],
+  "complaint_history": {
+    "id": "complaint_history",
+    "text": "",
+    "citizen_name": "Citizen",
+    "location": "",
+    "urgency": "MEDIUM",
+    "status": "PENDING",
+    "timestamp": "2025-09-14T11:34:00.741385+00:00"
+  },
   "agent_memory": {
     "chat_conversations": [],
     "routing_decisions": [],
-    "tracking_logs": []
+    "tracking_logs": [],
+    "id": "agent_memory",
+    "text": "",
+    "citizen_name": "Citizen",
+    "location": "",
+    "urgency": "MEDIUM",
+    "status": "PENDING",
+    "timestamp": "2025-09-14T11:34:00.741385+00:00"
   },
   "system_counters": {
     "total_complaints": 0,
     "resolved_complaints": 0,
     "pending_complaints": 0,
-    "last_complaint_id": 0
+    "last_complaint_id": 0,
+    "id": "system_counters",
+    "text": "",
+    "citizen_name": "Citizen",
+    "location": "",
+    "urgency": "MEDIUM",
+    "status": "PENDING",
+    "timestamp": "2025-09-14T11:34:00.741385+00:00"
   },
   "metadata": {
     "last_updated": "",
     "schema_version": "v2.0",
-    "compatible_agents": ["Chat_Agent", "Router_Agent", "Tracker_Agent", "Follow_Agent", "Escalate_Agent", "Analytics_Agent"]
+    "compatible_agents": [
+      "Chat_Agent",
+      "Router_Agent",
+      "Tracker_Agent",
+      "Follow_Agent",
+      "Escalate_Agent",
+      "Analytics_Agent"
+    ],
+    "id": "metadata",
+    "text": "",
+    "citizen_name": "Citizen",
+    "location": "",
+    "urgency": "MEDIUM",
+    "status": "PENDING",
+    "timestamp": "2025-09-14T11:34:00.741385+00:00"
+  },
+  "204F03AE": {
+    "id": "204F03AE",
+    "user_id": "user-1757842519121-9hyff4f0d",
+    "text": "There is a major water leakage on the main road, causing a lot of water wastage.",
+    "citizen_name": "Chat User",
+    "phone": "+91-0000000000",
+    "location": "Delhi, India",
+    "is_public": false,
+    "language": "English",
+    "category": "Water",
+    "urgency": "MEDIUM",
+    "confidence": 0.85,
+    "keywords": [
+      "water",
+      "leak"
+    ],
+    "status": "ORANGE",
+    "timestamp": "2025-09-14T11:26:32.205329+00:00",
+    "watson_analysis": {
+      "category": "Water",
+      "urgency": "MEDIUM",
+      "language": "English",
+      "confidence": 0.85,
+      "keywords_found": [
+        "water",
+        "leak"
+      ],
+      "source": "mock"
+    },
+    "tool_classification": {
+      "category": "water",
+      "subcategory": "pipeline_leak",
+      "confidence": 0.73,
+      "keywords_found": [
+        "water",
+        "leak"
+      ],
+      "department": "Delhi Jal Board (DJB)",
+      "estimated_resolution_days": 2,
+      "priority_multiplier": 1.5,
+      "alternative_categories": {
+        "road": 0.8
+      },
+      "total_categories_considered": 6
+    },
+    "tool_urgency": {
+      "urgency_level": "MEDIUM",
+      "urgency_score": 1.5,
+      "max_response_hours": 48,
+      "factors_identified": [],
+      "category_weight": 1.5,
+      "recommended_sla": "48 hours response, 5-10 days resolution",
+      "escalation_triggers": {
+        "no_acknowledgment_hours": 48,
+        "no_progress_hours": 96,
+        "overdue_threshold_hours": 144
+      },
+      "priority_score": 1.5
+    },
+    "processing_history": [
+      {
+        "agent": "Chat_Agent",
+        "action": "complaint_processed",
+        "timestamp": "2025-09-14T11:26:32.205329+00:00"
+      },
+      {
+        "agent": "Router_Agent",
+        "action": "routed_to_department",
+        "department": "District Collector Office",
+        "routing": {
+          "assigned_department": {
+            "name": "District Collector Office",
+            "code": "DCO",
+            "category_key": "general"
+          },
+          "contact_details": {
+            "primary_email": "collector@delhi.gov.in",
+            "primary_phone": "011-23392000",
+            "emergency_number": "100",
+            "department_head": "District Collector",
+            "address": "District Collector Office, Delhi"
+          },
+          "service_level_agreements": {
+            "acknowledgment_deadline_hours": 48,
+            "resolution_deadline_hours": 168,
+            "base_response_sla": 48,
+            "base_resolution_sla": 168,
+            "urgency_multiplier": 1.0
+          },
+          "escalation_path": [
+            {
+              "level": 2,
+              "title": "District Authority",
+              "contact": "District Collector",
+              "email": "collector@delhi.gov.in",
+              "trigger_hours": 120
+            },
+            {
+              "level": 3,
+              "title": "State Secretariat",
+              "contact": "Chief Secretary",
+              "email": "cs@delhi.gov.in",
+              "trigger_hours": 216
+            },
+            {
+              "level": 4,
+              "title": "Political Executive",
+              "contact": "Chief Minister's Office",
+              "email": "cmo@delhi.gov.in",
+              "trigger_hours": 384
+            }
+          ],
+          "routing_metadata": {
+            "routing_justification": "Standard mapping for Water category",
+            "primary_category": "Water",
+            "subcategory": "pipeline_leak",
+            "urgency_considered": "MEDIUM",
+            "location_factor": true,
+            "routing_timestamp": "2025-09-14T16:56:33.241158"
+          },
+          "automated_actions": {
+            "initial_reminder_hours": 36.0,
+            "follow_up_reminder_hours": 48,
+            "escalation_trigger_hours": 72,
+            "auto_escalation_enabled": false
+          }
+        },
+        "timestamp": "2025-09-14T11:26:33.242166+00:00"
+      },
+      {
+        "agent": "Tracker_Agent",
+        "action": "tracking_activated",
+        "timestamp": "2025-09-14T11:26:34.064968+00:00"
+      },
+      {
+        "agent": "Follow_Agent",
+        "action": "reminders_scheduled",
+        "timestamp": "2025-09-14T11:26:34.795680+00:00"
+      },
+      {
+        "agent": "Escalate_Agent",
+        "action": "escalation_check",
+        "escalated": false,
+        "level": "STANDARD",
+        "timestamp": "2025-09-14T11:26:34.887436+00:00"
+      }
+    ],
+    "assigned_department": "District Collector Office",
+    "deadlines": {
+      "acknowledgment": "2025-09-16T11:26:33.242166+00:00",
+      "resolution": "2025-09-21T11:26:33.242166+00:00"
+    },
+    "tracking": {
+      "monitoring_active": true,
+      "last_checked": "2025-09-14T11:26:34.064968+00:00",
+      "check_frequency": "hourly",
+      "notifications_enabled": true
+    },
+    "reminders": {
+      "first_reminder": "2025-09-14T23:26:34.795680+00:00",
+      "urgent_reminder": "2025-09-15T11:26:34.795680+00:00",
+      "escalation_reminder": "2025-09-16T11:26:34.795680+00:00",
+      "reminder_frequency": "Every 24 hours"
+    },
+    "escalation": {
+      "immediate": false,
+      "reason": "Normal processing",
+      "level": "STANDARD",
+      "escalated_at": null,
+      "escalation_path": [
+        "Department Officer",
+        "Department Head"
+      ]
+    }
+  },
+  "87B99C3F": {
+    "id": "87B99C3F",
+    "user_id": "user-1757842519121-9hyff4f0d",
+    "text": "The streetlights in my area have not been working for the past three days.",
+    "citizen_name": "Chat User",
+    "phone": "+91-0000000000",
+    "location": "Delhi, India",
+    "is_public": false,
+    "language": "English",
+    "category": "Electricity",
+    "urgency": "HIGH",
+    "confidence": 0.85,
+    "keywords": [
+      "light"
+    ],
+    "status": "ORANGE",
+    "timestamp": "2025-09-14T11:26:57.712011+00:00",
+    "watson_analysis": {
+      "category": "Electricity",
+      "urgency": "HIGH",
+      "language": "English",
+      "confidence": 0.85,
+      "keywords_found": [
+        "light"
+      ],
+      "source": "mock"
+    },
+    "tool_classification": {
+      "category": "road",
+      "subcategory": "street_damage",
+      "confidence": 0.55,
+      "keywords_found": [
+        "street"
+      ],
+      "department": "Public Works Department (PWD)",
+      "estimated_resolution_days": 7,
+      "priority_multiplier": 0.8,
+      "alternative_categories": {
+        "electricity": 1.0
+      },
+      "total_categories_considered": 6
+    },
+    "tool_urgency": {
+      "urgency_level": "LOW",
+      "urgency_score": 0.8,
+      "max_response_hours": 72,
+      "factors_identified": [],
+      "category_weight": 0.8,
+      "recommended_sla": "72 hours response, 2-4 weeks resolution",
+      "escalation_triggers": {
+        "no_acknowledgment_hours": 72,
+        "no_progress_hours": 144,
+        "overdue_threshold_hours": 216
+      },
+      "priority_score": 0.8
+    },
+    "processing_history": [
+      {
+        "agent": "Chat_Agent",
+        "action": "complaint_processed",
+        "timestamp": "2025-09-14T11:26:57.712011+00:00"
+      },
+      {
+        "agent": "Router_Agent",
+        "action": "routed_to_department",
+        "department": "District Collector Office",
+        "routing": {
+          "assigned_department": {
+            "name": "District Collector Office",
+            "code": "DCO",
+            "category_key": "general"
+          },
+          "contact_details": {
+            "primary_email": "collector@delhi.gov.in",
+            "primary_phone": "011-23392000",
+            "emergency_number": "100",
+            "department_head": "District Collector",
+            "address": "District Collector Office, Delhi"
+          },
+          "service_level_agreements": {
+            "acknowledgment_deadline_hours": 24,
+            "resolution_deadline_hours": 84,
+            "base_response_sla": 48,
+            "base_resolution_sla": 168,
+            "urgency_multiplier": 0.5
+          },
+          "escalation_path": [
+            {
+              "level": 2,
+              "title": "District Authority",
+              "contact": "District Collector",
+              "email": "collector@delhi.gov.in",
+              "trigger_hours": 96
+            },
+            {
+              "level": 3,
+              "title": "State Secretariat",
+              "contact": "Chief Secretary",
+              "email": "cs@delhi.gov.in",
+              "trigger_hours": 192
+            },
+            {
+              "level": 4,
+              "title": "Political Executive",
+              "contact": "Chief Minister's Office",
+              "email": "cmo@delhi.gov.in",
+              "trigger_hours": 360
+            }
+          ],
+          "routing_metadata": {
+            "routing_justification": "Standard mapping for Electricity category",
+            "primary_category": "Electricity",
+            "subcategory": "street_damage",
+            "urgency_considered": "HIGH",
+            "location_factor": true,
+            "routing_timestamp": "2025-09-14T16:56:58.715672"
+          },
+          "automated_actions": {
+            "initial_reminder_hours": 18.0,
+            "follow_up_reminder_hours": 24,
+            "escalation_trigger_hours": 48,
+            "auto_escalation_enabled": true
+          }
+        },
+        "timestamp": "2025-09-14T11:26:58.718072+00:00"
+      },
+      {
+        "agent": "Tracker_Agent",
+        "action": "tracking_activated",
+        "timestamp": "2025-09-14T11:26:59.539299+00:00"
+      },
+      {
+        "agent": "Follow_Agent",
+        "action": "reminders_scheduled",
+        "timestamp": "2025-09-14T11:27:00.257556+00:00"
+      },
+      {
+        "agent": "Escalate_Agent",
+        "action": "escalation_check",
+        "escalated": false,
+        "level": "STANDARD",
+        "timestamp": "2025-09-14T11:27:00.335326+00:00"
+      }
+    ],
+    "assigned_department": "District Collector Office",
+    "deadlines": {
+      "acknowledgment": "2025-09-15T11:26:58.718072+00:00",
+      "resolution": "2025-09-17T23:26:58.718072+00:00"
+    },
+    "tracking": {
+      "monitoring_active": true,
+      "last_checked": "2025-09-14T11:26:59.539299+00:00",
+      "check_frequency": "hourly",
+      "notifications_enabled": true
+    },
+    "reminders": {
+      "first_reminder": "2025-09-14T17:27:00.257556+00:00",
+      "urgent_reminder": "2025-09-14T23:27:00.257556+00:00",
+      "escalation_reminder": "2025-09-15T11:27:00.257556+00:00",
+      "reminder_frequency": "Every 12 hours"
+    },
+    "escalation": {
+      "immediate": false,
+      "reason": "Normal processing",
+      "level": "STANDARD",
+      "escalated_at": null,
+      "escalation_path": [
+        "Department Officer",
+        "Department Head"
+      ]
+    }
+  },
+  "7933D6B8": {
+    "id": "7933D6B8",
+    "user_id": "user-1757842519121-9hyff4f0d",
+    "text": "There is a major water leakage on the main road, causing a lot of water wastage.",
+    "citizen_name": "Chat User",
+    "phone": "+91-0000000000",
+    "location": "Delhi, India",
+    "is_public": false,
+    "language": "English",
+    "category": "Water",
+    "urgency": "MEDIUM",
+    "confidence": 0.85,
+    "keywords": [
+      "water",
+      "leak"
+    ],
+    "status": "ORANGE",
+    "timestamp": "2025-09-14T11:31:42.394043+00:00",
+    "watson_analysis": {
+      "category": "Water",
+      "urgency": "MEDIUM",
+      "language": "English",
+      "confidence": 0.85,
+      "keywords_found": [
+        "water",
+        "leak"
+      ],
+      "source": "watsonx"
+    },
+    "tool_classification": {
+      "category": "water",
+      "subcategory": "pipeline_leak",
+      "confidence": 0.73,
+      "keywords_found": [
+        "water",
+        "leak"
+      ],
+      "department": "Delhi Jal Board (DJB)",
+      "estimated_resolution_days": 2,
+      "priority_multiplier": 1.5,
+      "alternative_categories": {
+        "road": 0.8
+      },
+      "total_categories_considered": 6
+    },
+    "tool_urgency": {
+      "urgency_level": "MEDIUM",
+      "urgency_score": 1.5,
+      "max_response_hours": 48,
+      "factors_identified": [],
+      "category_weight": 1.5,
+      "recommended_sla": "48 hours response, 5-10 days resolution",
+      "escalation_triggers": {
+        "no_acknowledgment_hours": 48,
+        "no_progress_hours": 96,
+        "overdue_threshold_hours": 144
+      },
+      "priority_score": 1.5
+    },
+    "processing_history": [
+      {
+        "agent": "Chat_Agent",
+        "action": "complaint_processed",
+        "timestamp": "2025-09-14T11:31:42.394043+00:00"
+      },
+      {
+        "agent": "Router_Agent",
+        "action": "routed_to_department",
+        "department": "District Collector Office",
+        "routing": {
+          "assigned_department": {
+            "name": "District Collector Office",
+            "code": "DCO",
+            "category_key": "general"
+          },
+          "contact_details": {
+            "primary_email": "collector@delhi.gov.in",
+            "primary_phone": "011-23392000",
+            "emergency_number": "100",
+            "department_head": "District Collector",
+            "address": "District Collector Office, Delhi"
+          },
+          "service_level_agreements": {
+            "acknowledgment_deadline_hours": 48,
+            "resolution_deadline_hours": 168,
+            "base_response_sla": 48,
+            "base_resolution_sla": 168,
+            "urgency_multiplier": 1.0
+          },
+          "escalation_path": [
+            {
+              "level": 2,
+              "title": "District Authority",
+              "contact": "District Collector",
+              "email": "collector@delhi.gov.in",
+              "trigger_hours": 120
+            },
+            {
+              "level": 3,
+              "title": "State Secretariat",
+              "contact": "Chief Secretary",
+              "email": "cs@delhi.gov.in",
+              "trigger_hours": 216
+            },
+            {
+              "level": 4,
+              "title": "Political Executive",
+              "contact": "Chief Minister's Office",
+              "email": "cmo@delhi.gov.in",
+              "trigger_hours": 384
+            }
+          ],
+          "routing_metadata": {
+            "routing_justification": "Standard mapping for Water category",
+            "primary_category": "Water",
+            "subcategory": "pipeline_leak",
+            "urgency_considered": "MEDIUM",
+            "location_factor": true,
+            "routing_timestamp": "2025-09-14T17:01:43.432920"
+          },
+          "automated_actions": {
+            "initial_reminder_hours": 36.0,
+            "follow_up_reminder_hours": 48,
+            "escalation_trigger_hours": 72,
+            "auto_escalation_enabled": false
+          }
+        },
+        "timestamp": "2025-09-14T11:31:43.434933+00:00"
+      },
+      {
+        "agent": "Tracker_Agent",
+        "action": "tracking_activated",
+        "timestamp": "2025-09-14T11:31:44.261688+00:00"
+      },
+      {
+        "agent": "Follow_Agent",
+        "action": "reminders_scheduled",
+        "timestamp": "2025-09-14T11:31:44.977526+00:00"
+      },
+      {
+        "agent": "Escalate_Agent",
+        "action": "escalation_check",
+        "escalated": false,
+        "level": "STANDARD",
+        "timestamp": "2025-09-14T11:31:45.055272+00:00"
+      }
+    ],
+    "assigned_department": "District Collector Office",
+    "deadlines": {
+      "acknowledgment": "2025-09-16T11:31:43.434933+00:00",
+      "resolution": "2025-09-21T11:31:43.434933+00:00"
+    },
+    "routing": {
+      "assigned_department": {
+        "name": "District Collector Office",
+        "code": "DCO",
+        "category_key": "general"
+      },
+      "contact_details": {
+        "primary_email": "collector@delhi.gov.in",
+        "primary_phone": "011-23392000",
+        "emergency_number": "100",
+        "department_head": "District Collector",
+        "address": "District Collector Office, Delhi"
+      },
+      "service_level_agreements": {
+        "acknowledgment_deadline_hours": 48,
+        "resolution_deadline_hours": 168,
+        "base_response_sla": 48,
+        "base_resolution_sla": 168,
+        "urgency_multiplier": 1.0
+      },
+      "escalation_path": [
+        {
+          "level": 2,
+          "title": "District Authority",
+          "contact": "District Collector",
+          "email": "collector@delhi.gov.in",
+          "trigger_hours": 120
+        },
+        {
+          "level": 3,
+          "title": "State Secretariat",
+          "contact": "Chief Secretary",
+          "email": "cs@delhi.gov.in",
+          "trigger_hours": 216
+        },
+        {
+          "level": 4,
+          "title": "Political Executive",
+          "contact": "Chief Minister's Office",
+          "email": "cmo@delhi.gov.in",
+          "trigger_hours": 384
+        }
+      ],
+      "routing_metadata": {
+        "routing_justification": "Standard mapping for Water category",
+        "primary_category": "Water",
+        "subcategory": "pipeline_leak",
+        "urgency_considered": "MEDIUM",
+        "location_factor": true,
+        "routing_timestamp": "2025-09-14T17:01:43.432920"
+      },
+      "automated_actions": {
+        "initial_reminder_hours": 36.0,
+        "follow_up_reminder_hours": 48,
+        "escalation_trigger_hours": 72,
+        "auto_escalation_enabled": false
+      }
+    },
+    "tracking": {
+      "monitoring_active": true,
+      "last_checked": "2025-09-14T11:31:44.261688+00:00",
+      "check_frequency": "hourly",
+      "notifications_enabled": true
+    },
+    "reminders": {
+      "first_reminder": "2025-09-14T23:31:44.977526+00:00",
+      "urgent_reminder": "2025-09-15T11:31:44.977526+00:00",
+      "escalation_reminder": "2025-09-16T11:31:44.977526+00:00",
+      "reminder_frequency": "Every 24 hours"
+    },
+    "escalation": {
+      "immediate": false,
+      "reason": "Normal processing",
+      "level": "STANDARD",
+      "escalated_at": null,
+      "escalation_path": [
+        "Department Officer",
+        "Department Head"
+      ]
+    }
+  },
+  "55A05942": {
+    "id": "55A05942",
+    "user_id": "user-1757842519121-9hyff4f0d",
+    "text": "There is a major water leakage on the main road, causing a lot of water wastage.",
+    "citizen_name": "Chat User",
+    "phone": "+91-0000000000",
+    "location": "Delhi, India",
+    "is_public": false,
+    "language": "English",
+    "category": "Water",
+    "urgency": "MEDIUM",
+    "confidence": 0.85,
+    "keywords": [
+      "water",
+      "leak"
+    ],
+    "status": "ORANGE",
+    "timestamp": "2025-09-14T11:31:50.633133+00:00",
+    "watson_analysis": {
+      "category": "Water",
+      "urgency": "MEDIUM",
+      "language": "English",
+      "confidence": 0.85,
+      "keywords_found": [
+        "water",
+        "leak"
+      ],
+      "source": "watsonx"
+    },
+    "tool_classification": {
+      "category": "water",
+      "subcategory": "pipeline_leak",
+      "confidence": 0.73,
+      "keywords_found": [
+        "water",
+        "leak"
+      ],
+      "department": "Delhi Jal Board (DJB)",
+      "estimated_resolution_days": 2,
+      "priority_multiplier": 1.5,
+      "alternative_categories": {
+        "road": 0.8
+      },
+      "total_categories_considered": 6
+    },
+    "tool_urgency": {
+      "urgency_level": "MEDIUM",
+      "urgency_score": 1.5,
+      "max_response_hours": 48,
+      "factors_identified": [],
+      "category_weight": 1.5,
+      "recommended_sla": "48 hours response, 5-10 days resolution",
+      "escalation_triggers": {
+        "no_acknowledgment_hours": 48,
+        "no_progress_hours": 96,
+        "overdue_threshold_hours": 144
+      },
+      "priority_score": 1.5
+    },
+    "processing_history": [
+      {
+        "agent": "Chat_Agent",
+        "action": "complaint_processed",
+        "timestamp": "2025-09-14T11:31:50.633133+00:00"
+      },
+      {
+        "agent": "Router_Agent",
+        "action": "routed_to_department",
+        "department": "District Collector Office",
+        "routing": {
+          "assigned_department": {
+            "name": "District Collector Office",
+            "code": "DCO",
+            "category_key": "general"
+          },
+          "contact_details": {
+            "primary_email": "collector@delhi.gov.in",
+            "primary_phone": "011-23392000",
+            "emergency_number": "100",
+            "department_head": "District Collector",
+            "address": "District Collector Office, Delhi"
+          },
+          "service_level_agreements": {
+            "acknowledgment_deadline_hours": 48,
+            "resolution_deadline_hours": 168,
+            "base_response_sla": 48,
+            "base_resolution_sla": 168,
+            "urgency_multiplier": 1.0
+          },
+          "escalation_path": [
+            {
+              "level": 2,
+              "title": "District Authority",
+              "contact": "District Collector",
+              "email": "collector@delhi.gov.in",
+              "trigger_hours": 120
+            },
+            {
+              "level": 3,
+              "title": "State Secretariat",
+              "contact": "Chief Secretary",
+              "email": "cs@delhi.gov.in",
+              "trigger_hours": 216
+            },
+            {
+              "level": 4,
+              "title": "Political Executive",
+              "contact": "Chief Minister's Office",
+              "email": "cmo@delhi.gov.in",
+              "trigger_hours": 384
+            }
+          ],
+          "routing_metadata": {
+            "routing_justification": "Standard mapping for Water category",
+            "primary_category": "Water",
+            "subcategory": "pipeline_leak",
+            "urgency_considered": "MEDIUM",
+            "location_factor": true,
+            "routing_timestamp": "2025-09-14T17:01:51.656713"
+          },
+          "automated_actions": {
+            "initial_reminder_hours": 36.0,
+            "follow_up_reminder_hours": 48,
+            "escalation_trigger_hours": 72,
+            "auto_escalation_enabled": false
+          }
+        },
+        "timestamp": "2025-09-14T11:31:51.658431+00:00"
+      },
+      {
+        "agent": "Tracker_Agent",
+        "action": "tracking_activated",
+        "timestamp": "2025-09-14T11:31:52.461591+00:00"
+      },
+      {
+        "agent": "Follow_Agent",
+        "action": "reminders_scheduled",
+        "timestamp": "2025-09-14T11:31:53.179174+00:00"
+      },
+      {
+        "agent": "Escalate_Agent",
+        "action": "escalation_check",
+        "escalated": false,
+        "level": "STANDARD",
+        "timestamp": "2025-09-14T11:31:53.271220+00:00"
+      }
+    ],
+    "assigned_department": "District Collector Office",
+    "deadlines": {
+      "acknowledgment": "2025-09-16T11:31:51.658431+00:00",
+      "resolution": "2025-09-21T11:31:51.658431+00:00"
+    },
+    "routing": {
+      "assigned_department": {
+        "name": "District Collector Office",
+        "code": "DCO",
+        "category_key": "general"
+      },
+      "contact_details": {
+        "primary_email": "collector@delhi.gov.in",
+        "primary_phone": "011-23392000",
+        "emergency_number": "100",
+        "department_head": "District Collector",
+        "address": "District Collector Office, Delhi"
+      },
+      "service_level_agreements": {
+        "acknowledgment_deadline_hours": 48,
+        "resolution_deadline_hours": 168,
+        "base_response_sla": 48,
+        "base_resolution_sla": 168,
+        "urgency_multiplier": 1.0
+      },
+      "escalation_path": [
+        {
+          "level": 2,
+          "title": "District Authority",
+          "contact": "District Collector",
+          "email": "collector@delhi.gov.in",
+          "trigger_hours": 120
+        },
+        {
+          "level": 3,
+          "title": "State Secretariat",
+          "contact": "Chief Secretary",
+          "email": "cs@delhi.gov.in",
+          "trigger_hours": 216
+        },
+        {
+          "level": 4,
+          "title": "Political Executive",
+          "contact": "Chief Minister's Office",
+          "email": "cmo@delhi.gov.in",
+          "trigger_hours": 384
+        }
+      ],
+      "routing_metadata": {
+        "routing_justification": "Standard mapping for Water category",
+        "primary_category": "Water",
+        "subcategory": "pipeline_leak",
+        "urgency_considered": "MEDIUM",
+        "location_factor": true,
+        "routing_timestamp": "2025-09-14T17:01:51.656713"
+      },
+      "automated_actions": {
+        "initial_reminder_hours": 36.0,
+        "follow_up_reminder_hours": 48,
+        "escalation_trigger_hours": 72,
+        "auto_escalation_enabled": false
+      }
+    },
+    "tracking": {
+      "monitoring_active": true,
+      "last_checked": "2025-09-14T11:31:52.461591+00:00",
+      "check_frequency": "hourly",
+      "notifications_enabled": true
+    },
+    "reminders": {
+      "first_reminder": "2025-09-14T23:31:53.179174+00:00",
+      "urgent_reminder": "2025-09-15T11:31:53.179174+00:00",
+      "escalation_reminder": "2025-09-16T11:31:53.179174+00:00",
+      "reminder_frequency": "Every 24 hours"
+    },
+    "escalation": {
+      "immediate": false,
+      "reason": "Normal processing",
+      "level": "STANDARD",
+      "escalated_at": null,
+      "escalation_path": [
+        "Department Officer",
+        "Department Head"
+      ]
+    }
+  },
+  "605356F3": {
+    "id": "605356F3",
+    "user_id": "user-1757842519121-9hyff4f0d",
+    "text": "The streetlights in my area have not been working for the past three days.",
+    "citizen_name": "Chat User",
+    "phone": "+91-0000000000",
+    "location": "Delhi, India",
+    "is_public": false,
+    "language": "English",
+    "category": "Electricity",
+    "urgency": "HIGH",
+    "confidence": 0.85,
+    "keywords": [
+      "light"
+    ],
+    "status": "IN_PROGRESS",
+    "timestamp": "2025-09-14T11:34:23.259334+00:00",
+    "watson_analysis": {
+      "category": "Electricity",
+      "urgency": "HIGH",
+      "language": "English",
+      "confidence": 0.85,
+      "keywords_found": [
+        "light"
+      ],
+      "source": "watsonx"
+    },
+    "tool_classification": {
+      "category": "road",
+      "subcategory": "street_damage",
+      "confidence": 0.55,
+      "keywords_found": [
+        "street"
+      ],
+      "department": "Public Works Department (PWD)",
+      "estimated_resolution_days": 7,
+      "priority_multiplier": 0.8,
+      "alternative_categories": {
+        "electricity": 1.0
+      },
+      "total_categories_considered": 6
+    },
+    "tool_urgency": {
+      "urgency_level": "LOW",
+      "urgency_score": 0.8,
+      "max_response_hours": 72,
+      "factors_identified": [],
+      "category_weight": 0.8,
+      "recommended_sla": "72 hours response, 2-4 weeks resolution",
+      "escalation_triggers": {
+        "no_acknowledgment_hours": 72,
+        "no_progress_hours": 144,
+        "overdue_threshold_hours": 216
+      },
+      "priority_score": 0.8
+    },
+    "processing_history": [
+      {
+        "agent": "Chat_Agent",
+        "action": "complaint_processed",
+        "timestamp": "2025-09-14T11:34:23.259334+00:00"
+      },
+      {
+        "agent": "Router_Agent",
+        "action": "routed_to_department",
+        "department": "District Collector Office",
+        "routing": {
+          "assigned_department": {
+            "name": "District Collector Office",
+            "code": "DCO",
+            "category_key": "general"
+          },
+          "contact_details": {
+            "primary_email": "collector@delhi.gov.in",
+            "primary_phone": "011-23392000",
+            "emergency_number": "100",
+            "department_head": "District Collector",
+            "address": "District Collector Office, Delhi"
+          },
+          "service_level_agreements": {
+            "acknowledgment_deadline_hours": 24,
+            "resolution_deadline_hours": 84,
+            "base_response_sla": 48,
+            "base_resolution_sla": 168,
+            "urgency_multiplier": 0.5
+          },
+          "escalation_path": [
+            {
+              "level": 2,
+              "title": "District Authority",
+              "contact": "District Collector",
+              "email": "collector@delhi.gov.in",
+              "trigger_hours": 96
+            },
+            {
+              "level": 3,
+              "title": "State Secretariat",
+              "contact": "Chief Secretary",
+              "email": "cs@delhi.gov.in",
+              "trigger_hours": 192
+            },
+            {
+              "level": 4,
+              "title": "Political Executive",
+              "contact": "Chief Minister's Office",
+              "email": "cmo@delhi.gov.in",
+              "trigger_hours": 360
+            }
+          ],
+          "routing_metadata": {
+            "routing_justification": "Standard mapping for Electricity category",
+            "primary_category": "Electricity",
+            "subcategory": "street_damage",
+            "urgency_considered": "HIGH",
+            "location_factor": true,
+            "routing_timestamp": "2025-09-14T17:04:24.273774"
+          },
+          "automated_actions": {
+            "initial_reminder_hours": 18.0,
+            "follow_up_reminder_hours": 24,
+            "escalation_trigger_hours": 48,
+            "auto_escalation_enabled": true
+          }
+        },
+        "timestamp": "2025-09-14T11:34:24.275367+00:00"
+      },
+      {
+        "agent": "Tracker_Agent",
+        "action": "tracking_activated",
+        "timestamp": "2025-09-14T11:34:25.071069+00:00"
+      },
+      {
+        "agent": "Follow_Agent",
+        "action": "reminders_scheduled",
+        "timestamp": "2025-09-14T11:34:25.783889+00:00"
+      },
+      {
+        "agent": "Escalate_Agent",
+        "action": "escalation_check",
+        "escalated": false,
+        "level": "STANDARD",
+        "timestamp": "2025-09-14T11:34:25.861813+00:00"
+      },
+      {
+        "agent": "Analytics_Agent",
+        "action": "analytics_generated",
+        "timestamp": "2025-09-14T11:34:26.294167+00:00"
+      },
+      {
+        "agent": "Government_Officer",
+        "action": "response_provided",
+        "status": "IN_PROGRESS",
+        "department": "Public Works Department",
+        "officer": "Department Officer",
+        "timestamp": "2025-09-14T11:34:51.785561+00:00"
+      }
+    ],
+    "assigned_department": "District Collector Office",
+    "deadlines": {
+      "acknowledgment": "2025-09-15T11:34:24.275367+00:00",
+      "resolution": "2025-09-17T23:34:24.275367+00:00"
+    },
+    "routing": {
+      "assigned_department": {
+        "name": "District Collector Office",
+        "code": "DCO",
+        "category_key": "general"
+      },
+      "contact_details": {
+        "primary_email": "collector@delhi.gov.in",
+        "primary_phone": "011-23392000",
+        "emergency_number": "100",
+        "department_head": "District Collector",
+        "address": "District Collector Office, Delhi"
+      },
+      "service_level_agreements": {
+        "acknowledgment_deadline_hours": 24,
+        "resolution_deadline_hours": 84,
+        "base_response_sla": 48,
+        "base_resolution_sla": 168,
+        "urgency_multiplier": 0.5
+      },
+      "escalation_path": [
+        {
+          "level": 2,
+          "title": "District Authority",
+          "contact": "District Collector",
+          "email": "collector@delhi.gov.in",
+          "trigger_hours": 96
+        },
+        {
+          "level": 3,
+          "title": "State Secretariat",
+          "contact": "Chief Secretary",
+          "email": "cs@delhi.gov.in",
+          "trigger_hours": 192
+        },
+        {
+          "level": 4,
+          "title": "Political Executive",
+          "contact": "Chief Minister's Office",
+          "email": "cmo@delhi.gov.in",
+          "trigger_hours": 360
+        }
+      ],
+      "routing_metadata": {
+        "routing_justification": "Standard mapping for Electricity category",
+        "primary_category": "Electricity",
+        "subcategory": "street_damage",
+        "urgency_considered": "HIGH",
+        "location_factor": true,
+        "routing_timestamp": "2025-09-14T17:04:24.273774"
+      },
+      "automated_actions": {
+        "initial_reminder_hours": 18.0,
+        "follow_up_reminder_hours": 24,
+        "escalation_trigger_hours": 48,
+        "auto_escalation_enabled": true
+      }
+    },
+    "tracking": {
+      "monitoring_active": true,
+      "last_checked": "2025-09-14T11:34:25.071069+00:00",
+      "check_frequency": "hourly",
+      "notifications_enabled": true
+    },
+    "reminders": {
+      "first_reminder": "2025-09-14T17:34:25.783889+00:00",
+      "urgent_reminder": "2025-09-14T23:34:25.783889+00:00",
+      "escalation_reminder": "2025-09-15T11:34:25.783889+00:00",
+      "reminder_frequency": "Every 12 hours"
+    },
+    "escalation": {
+      "immediate": false,
+      "reason": "Normal processing",
+      "level": "STANDARD",
+      "escalated_at": null,
+      "escalation_path": [
+        "Department Officer",
+        "Department Head"
+      ]
+    },
+    "analytics": {
+      "similar_complaints": 2,
+      "location_complaints": 5,
+      "recent_trend": 9,
+      "category_rank": 3,
+      "urgency_distribution": {
+        "MEDIUM": 7,
+        "HIGH": 2
+      },
+      "average_resolution_time": "5 days",
+      "department_rating": "7.7/10",
+      "success_probability": "86%",
+      "insights": [
+        "This is a high priority electricity complaint",
+        "Your area has 5 similar complaints",
+        "Average resolution time for this category is 5 days",
+        "Success rate for similar complaints is 86%"
+      ],
+      "recommendations": [
+        "Follow up within 24 hours if no acknowledgment",
+        "Consider filing an RTI if delayed beyond deadline",
+        "Join community groups for similar issues"
+      ]
+    },
+    "response": {
+      "message": "haa",
+      "department": "Public Works Department",
+      "officer_name": "Department Officer",
+      "estimated_completion": null,
+      "responded_at": "2025-09-14T11:34:51.785561+00:00",
+      "response_timestamp": "2025-09-14T11:34:51.785561+00:00"
+    }
+  },
+  "0DAEDD56": {
+    "id": "0DAEDD56",
+    "user_id": "user-1757842519121-9hyff4f0d",
+    "text": "The streetlights in my area have not been working for the past three days.",
+    "citizen_name": "Chat User",
+    "phone": "+91-0000000000",
+    "location": "Delhi, India",
+    "is_public": false,
+    "language": "English",
+    "category": "Electricity",
+    "urgency": "HIGH",
+    "confidence": 0.85,
+    "keywords": [
+      "light"
+    ],
+    "status": "ORANGE",
+    "timestamp": "2025-09-14T11:38:57.722114+00:00",
+    "watson_analysis": {
+      "category": "Electricity",
+      "urgency": "HIGH",
+      "language": "English",
+      "confidence": 0.85,
+      "keywords_found": [
+        "light"
+      ],
+      "source": "watsonx"
+    },
+    "tool_classification": {
+      "category": "road",
+      "subcategory": "street_damage",
+      "confidence": 0.55,
+      "keywords_found": [
+        "street"
+      ],
+      "department": "Public Works Department (PWD)",
+      "estimated_resolution_days": 7,
+      "priority_multiplier": 0.8,
+      "alternative_categories": {
+        "electricity": 1.0
+      },
+      "total_categories_considered": 6
+    },
+    "tool_urgency": {
+      "urgency_level": "LOW",
+      "urgency_score": 0.8,
+      "max_response_hours": 72,
+      "factors_identified": [],
+      "category_weight": 0.8,
+      "recommended_sla": "72 hours response, 2-4 weeks resolution",
+      "escalation_triggers": {
+        "no_acknowledgment_hours": 72,
+        "no_progress_hours": 144,
+        "overdue_threshold_hours": 216
+      },
+      "priority_score": 0.8
+    },
+    "processing_history": [
+      {
+        "agent": "Chat_Agent",
+        "action": "complaint_processed",
+        "timestamp": "2025-09-14T11:38:57.722114+00:00"
+      },
+      {
+        "agent": "Router_Agent",
+        "action": "routed_to_department",
+        "department": "District Collector Office",
+        "routing": {
+          "assigned_department": {
+            "name": "District Collector Office",
+            "code": "DCO",
+            "category_key": "general"
+          },
+          "contact_details": {
+            "primary_email": "collector@delhi.gov.in",
+            "primary_phone": "011-23392000",
+            "emergency_number": "100",
+            "department_head": "District Collector",
+            "address": "District Collector Office, Delhi"
+          },
+          "service_level_agreements": {
+            "acknowledgment_deadline_hours": 24,
+            "resolution_deadline_hours": 84,
+            "base_response_sla": 48,
+            "base_resolution_sla": 168,
+            "urgency_multiplier": 0.5
+          },
+          "escalation_path": [
+            {
+              "level": 2,
+              "title": "District Authority",
+              "contact": "District Collector",
+              "email": "collector@delhi.gov.in",
+              "trigger_hours": 96
+            },
+            {
+              "level": 3,
+              "title": "State Secretariat",
+              "contact": "Chief Secretary",
+              "email": "cs@delhi.gov.in",
+              "trigger_hours": 192
+            },
+            {
+              "level": 4,
+              "title": "Political Executive",
+              "contact": "Chief Minister's Office",
+              "email": "cmo@delhi.gov.in",
+              "trigger_hours": 360
+            }
+          ],
+          "routing_metadata": {
+            "routing_justification": "Standard mapping for Electricity category",
+            "primary_category": "Electricity",
+            "subcategory": "street_damage",
+            "urgency_considered": "HIGH",
+            "location_factor": true,
+            "routing_timestamp": "2025-09-14T17:08:58.727460"
+          },
+          "automated_actions": {
+            "initial_reminder_hours": 18.0,
+            "follow_up_reminder_hours": 24,
+            "escalation_trigger_hours": 48,
+            "auto_escalation_enabled": true
+          }
+        },
+        "timestamp": "2025-09-14T11:38:58.728651+00:00"
+      },
+      {
+        "agent": "Tracker_Agent",
+        "action": "tracking_activated",
+        "timestamp": "2025-09-14T11:38:59.548125+00:00"
+      },
+      {
+        "agent": "Follow_Agent",
+        "action": "reminders_scheduled",
+        "timestamp": "2025-09-14T11:39:00.276509+00:00"
+      },
+      {
+        "agent": "Escalate_Agent",
+        "action": "escalation_check",
+        "escalated": false,
+        "level": "STANDARD",
+        "timestamp": "2025-09-14T11:39:00.368310+00:00"
+      },
+      {
+        "agent": "Analytics_Agent",
+        "action": "analytics_generated",
+        "timestamp": "2025-09-14T11:39:00.771265+00:00"
+      }
+    ],
+    "assigned_department": "District Collector Office",
+    "deadlines": {
+      "acknowledgment": "2025-09-15T11:38:58.728651+00:00",
+      "resolution": "2025-09-17T23:38:58.728651+00:00"
+    },
+    "routing": {
+      "assigned_department": {
+        "name": "District Collector Office",
+        "code": "DCO",
+        "category_key": "general"
+      },
+      "contact_details": {
+        "primary_email": "collector@delhi.gov.in",
+        "primary_phone": "011-23392000",
+        "emergency_number": "100",
+        "department_head": "District Collector",
+        "address": "District Collector Office, Delhi"
+      },
+      "service_level_agreements": {
+        "acknowledgment_deadline_hours": 24,
+        "resolution_deadline_hours": 84,
+        "base_response_sla": 48,
+        "base_resolution_sla": 168,
+        "urgency_multiplier": 0.5
+      },
+      "escalation_path": [
+        {
+          "level": 2,
+          "title": "District Authority",
+          "contact": "District Collector",
+          "email": "collector@delhi.gov.in",
+          "trigger_hours": 96
+        },
+        {
+          "level": 3,
+          "title": "State Secretariat",
+          "contact": "Chief Secretary",
+          "email": "cs@delhi.gov.in",
+          "trigger_hours": 192
+        },
+        {
+          "level": 4,
+          "title": "Political Executive",
+          "contact": "Chief Minister's Office",
+          "email": "cmo@delhi.gov.in",
+          "trigger_hours": 360
+        }
+      ],
+      "routing_metadata": {
+        "routing_justification": "Standard mapping for Electricity category",
+        "primary_category": "Electricity",
+        "subcategory": "street_damage",
+        "urgency_considered": "HIGH",
+        "location_factor": true,
+        "routing_timestamp": "2025-09-14T17:08:58.727460"
+      },
+      "automated_actions": {
+        "initial_reminder_hours": 18.0,
+        "follow_up_reminder_hours": 24,
+        "escalation_trigger_hours": 48,
+        "auto_escalation_enabled": true
+      }
+    },
+    "tracking": {
+      "monitoring_active": true,
+      "last_checked": "2025-09-14T11:38:59.548125+00:00",
+      "check_frequency": "hourly",
+      "notifications_enabled": true
+    },
+    "reminders": {
+      "first_reminder": "2025-09-14T17:39:00.276509+00:00",
+      "urgent_reminder": "2025-09-14T23:39:00.276509+00:00",
+      "escalation_reminder": "2025-09-15T11:39:00.276509+00:00",
+      "reminder_frequency": "Every 12 hours"
+    },
+    "escalation": {
+      "immediate": false,
+      "reason": "Normal processing",
+      "level": "STANDARD",
+      "escalated_at": null,
+      "escalation_path": [
+        "Department Officer",
+        "Department Head"
+      ]
+    },
+    "analytics": {
+      "similar_complaints": 3,
+      "location_complaints": 6,
+      "recent_trend": 10,
+      "category_rank": 3,
+      "urgency_distribution": {
+        "MEDIUM": 7,
+        "HIGH": 3
+      },
+      "average_resolution_time": "5 days",
+      "department_rating": "7.8/10",
+      "success_probability": "84%",
+      "insights": [
+        "This is a high priority electricity complaint",
+        "Your area has 6 similar complaints",
+        "Average resolution time for this category is 5 days",
+        "Success rate for similar complaints is 84%"
+      ],
+      "recommendations": [
+        "Follow up within 24 hours if no acknowledgment",
+        "Consider filing an RTI if delayed beyond deadline",
+        "Join community groups for similar issues"
+      ]
+    }
   }
 }

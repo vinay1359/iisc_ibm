@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Government Department Dashboard - Citizen Voice AI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);
+            color: #e5e5e5;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.1);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            color: white;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .department-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .department-name {
+            font-size: 14px;
+            color: #a1a1aa;
+            margin-bottom: 5px;
+        }
+
+        .department-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-bottom: 8px;
+            color: #d1d5db;
+        }
+
+        .menu-item:hover, .menu-item.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+
+        .menu-icon {
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            background: rgba(255, 255, 255, 0.1);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dashboard-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .dashboard-subtitle {
+            font-size: 14px;
+            color: #a1a1aa;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #a1a1aa;
+            margin-bottom: 5px;
+        }
+
+        .stat-change {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+
+        .stat-up {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .stat-down {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .complaints-section {
+            background: rgba(255, 255, 255, 0.1);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .filter-tab {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 12px;
+            color: #d1d5db;
+        }
+
+        .filter-tab.active, .filter-tab:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .complaints-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .complaint-card {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .complaint-card:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateX(5px);
+        }
+
+        .complaint-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .complaint-id {
+            background: #3b82f6;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .complaint-meta {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .urgency-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .urgency-critical {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .urgency-high {
+            background: rgba(251, 146, 60, 0.2);
+            color: #fb923c;
+        }
+
+        .urgency-medium {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .complaint-text {
+            color: #e5e5e5;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .complaint-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .complaint-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn:hover {
+            background: rgba(16, 185, 129, 0.3);
+        }
+
+        .action-btn.secondary {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+        }
+
+        .action-btn.secondary:hover {
+            background: rgba(59, 130, 246, 0.3);
+        }
+
+        .action-btn.danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .action-btn.danger:hover {
+            background: rgba(239, 68, 68, 0.3);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #1f2937;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            color: #e5e5e5;
+            margin-bottom: 8px;
+        }
+
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            padding: 12px;
+            color: #e5e5e5;
+            font-size: 14px;
+        }
+
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #e5e5e5;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 16px 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1001;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .scrollbar-thin {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="sidebar scrollbar-thin">
+            <h2>🏛️ Government Portal</h2>
+            
+            <div class="department-info">
+                <div class="department-name">Logged in as</div>
+                <div class="department-title">Public Works Department</div>
+            </div>
+
+            <div class="menu-item active" data-section="dashboard">
+                <div class="menu-icon">📊</div>
+                <span>Dashboard</span>
+            </div>
+            <div class="menu-item" data-section="complaints">
+                <div class="menu-icon">📋</div>
+                <span>Complaints</span>
+            </div>
+            <div class="menu-item" data-section="pending">
+                <div class="menu-icon">⏳</div>
+                <span>Pending Actions</span>
+            </div>
+            <div class="menu-item" data-section="resolved">
+                <div class="menu-icon">✅</div>
+                <span>Resolved</span>
+            </div>
+            <div class="menu-item" data-section="analytics">
+                <div class="menu-icon">📈</div>
+                <span>Analytics</span>
+            </div>
+            <div class="menu-item" data-section="settings">
+                <div class="menu-icon">⚙️</div>
+                <span>Settings</span>
+            </div>
+        </div>
+
+        <div class="main-content scrollbar-thin">
+            <div class="dashboard-header">
+                <div>
+                    <div class="dashboard-title">Complaint Management Dashboard</div>
+                    <div class="dashboard-subtitle">Manage citizen complaints with AI assistance</div>
+                </div>
+                <div style="color: #22c55e; font-size: 14px;">🟢 AI Agents Active</div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalComplaints">24</div>
+                    <div class="stat-label">Total Complaints</div>
+                    <div class="stat-change stat-up">↗ +8 this week</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="pendingComplaints">12</div>
+                    <div class="stat-label">Pending Action</div>
+                    <div class="stat-change stat-down">↙ -3 from last week</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="criticalComplaints">3</div>
+                    <div class="stat-label">Critical Issues</div>
+                    <div class="stat-change stat-up">↗ +1 urgent</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">96%</div>
+                    <div class="stat-label">Resolution Rate</div>
+                    <div class="stat-change stat-up">↗ +2% improvement</div>
+                </div>
+            </div>
+
+            <div class="complaints-section">
+                <div class="section-header">
+                    <div class="section-title">
+                        🚨 Priority Complaints
+                    </div>
+                </div>
+                
+                <div class="filter-tabs">
+                    <div class="filter-tab active" data-filter="all">All Complaints</div>
+                    <div class="filter-tab" data-filter="critical">Critical</div>
+                    <div class="filter-tab" data-filter="high">High Priority</div>
+                    <div class="filter-tab" data-filter="pending">Pending</div>
+                    <div class="filter-tab" data-filter="today">Today</div>
+                </div>
+
+                <div class="complaints-list" id="complaintsList">
+                    <!-- Complaints will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Response Modal -->
+    <div class="modal" id="responseModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Respond to Complaint</div>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Complaint ID</label>
+                <input type="text" class="form-input" id="modalComplaintId" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Status Update</label>
+                <select class="form-select" id="statusUpdate">
+                    <option value="ACKNOWLEDGED">Acknowledged - We received your complaint</option>
+                    <option value="IN_PROGRESS">In Progress - Work has started</option>
+                    <option value="RESOLVED">Resolved - Issue has been fixed</option>
+                    <option value="CLOSED">Closed - Complaint completed</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Response Message</label>
+                <textarea class="form-textarea" id="responseMessage" 
+                         placeholder="Enter your response to the citizen..."></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Estimated Completion (Optional)</label>
+                <input type="datetime-local" class="form-input" id="estimatedCompletion">
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="submitResponse()">Send Response</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div id="notificationText"></div>
+    </div>
+
+    <script>
+                        const API_BASE = 'http://127.0.0.1:8000/api';
+        let complaints = [];
+        let currentComplaintId = null;
+
+        class GovernmentDashboard {
+            constructor() {
+                this.loadComplaints();
+                this.setupEventListeners();
+                this.startRealTimeUpdates();
+            }
+
+            setupEventListeners() {
+                // Menu navigation
+                document.querySelectorAll('.menu-item').forEach(item => {
+                    item.addEventListener('click', (e) => {
+                        document.querySelectorAll('.menu-item').forEach(mi => mi.classList.remove('active'));
+                        item.classList.add('active');
+                        // Handle section switching logic here
+                    });
+                });
+
+                // Filter tabs
+                document.querySelectorAll('.filter-tab').forEach(tab => {
+                    tab.addEventListener('click', (e) => {
+                        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        this.filterComplaints(tab.dataset.filter);
+                    });
+                });
+            }
+
+            async loadComplaints() {
+                try {
+                    // Try to load from API first
+                    const response = await fetch(`${API_BASE}/complaints`);
+                    if (response.ok) {
+                        complaints = await response.json();
+                        console.log('Loaded complaints from API:', complaints.length);
+                    } else {
+                        console.warn('API not available, using sample data');
+                        this.loadSampleData();
+                    }
+                    
+                    this.displayComplaints(complaints);
+                    this.updateStats();
+                    
+                    // Check backend connectivity
+                    this.checkBackendConnection();
+                    
+                } catch (error) {
+                    console.error('Failed to load complaints:', error);
+                    this.showNotification('⚠️ Using offline mode - connect to backend for real data', 'warning');
+                    this.loadSampleData();
+                    this.displayComplaints(complaints);
+                    this.updateStats();
+                }
+            }
+
+            loadSampleData() {
+                complaints = [
+                    {
+                        id: '90ABC302',
+                        text: 'There are large potholes on the main road near the market. It\'s dangerous for vehicles and has already caused several accidents. The road needs immediate repair.',
+                        citizen_name: 'Rajesh Kumar',
+                        phone: '+91-9876543210',
+                        location: 'Karol Bagh, Delhi',
+                        category: 'Road',
+                        urgency: 'CRITICAL',
+                        status: 'ORANGE',
+                        timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString()
+                    },
+                    {
+                        id: '89XYZ451',
+                        text: 'Street lights have been non-functional for over a week on MG Road. This is creating safety concerns for pedestrians and vehicle drivers.',
+                        citizen_name: 'Priya Sharma',
+                        phone: '+91-9123456789',
+                        location: 'Lajpat Nagar, Delhi',
+                        category: 'Electricity',
+                        urgency: 'HIGH',
+                        status: 'ORANGE',
+                        timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString()
+                    },
+                    {
+                        id: '78DEF123',
+                        text: 'Water logging issue during monsoon. The drainage system is completely blocked and water accumulates for hours.',
+                        citizen_name: 'Amit Singh',
+                        phone: '+91-9988776655',
+                        location: 'Connaught Place, Delhi',
+                        category: 'Water',
+                        urgency: 'MEDIUM',
+                        status: 'BLUE',
+                        timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+                    }
+                ];
+            }
+
+            async checkBackendConnection() {
+                try {
+                    const response = await fetch(`${API_BASE}/health`);
+                    if (response.ok) {
+                        this.showNotification('🟢 Connected to backend server', 'success');
+                        return true;
+                    }
+                } catch (error) {
+                    this.showNotification('🔴 Backend server not connected - using offline mode', 'warning');
+                    return false;
+                }
+            }
+
+            displayComplaints(complaintsToShow) {
+                const container = document.getElementById('complaintsList');
+                if (complaintsToShow.length === 0) {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: #9ca3af;">
+                            <div style="font-size: 48px; margin-bottom: 16px;">📭</div>
+                            <div>No complaints found</div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = complaintsToShow.map(complaint => `
+                    <div class="complaint-card" onclick="openResponseModal('${complaint.id}')">
+                        <div class="complaint-header">
+                            <div class="complaint-id">#${complaint.id}</div>
+                            <div class="complaint-meta">
+                                <div class="urgency-badge urgency-${complaint.urgency.toLowerCase()}">${complaint.urgency}</div>
+                                <div style="font-size: 12px; color: #9ca3af;">
+                                    ${this.timeAgo(complaint.timestamp)}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="complaint-text">${complaint.text}</div>
+                        
+                        <div class="complaint-footer">
+                            <div>
+                                <strong>${complaint.citizen_name}</strong> • ${complaint.location}
+                            </div>
+                            <div class="complaint-actions">
+                                <button class="action-btn" onclick="event.stopPropagation(); respondToComplaint('${complaint.id}', 'ACKNOWLEDGED')">
+                                    📧 Acknowledge
+                                </button>
+                                <button class="action-btn secondary" onclick="event.stopPropagation(); respondToComplaint('${complaint.id}', 'IN_PROGRESS')">
+                                    🔄 Start Work
+                                </button>
+                                <button class="action-btn danger" onclick="event.stopPropagation(); respondToComplaint('${complaint.id}', 'RESOLVED')">
+                                    ✅ Mark Resolved
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            filterComplaints(filter) {
+                let filteredComplaints = complaints;
+                
+                switch(filter) {
+                    case 'critical':
+                        filteredComplaints = complaints.filter(c => c.urgency === 'CRITICAL');
+                        break;
+                    case 'high':
+                        filteredComplaints = complaints.filter(c => c.urgency === 'HIGH');
+                        break;
+                    case 'pending':
+                        filteredComplaints = complaints.filter(c => c.status !== 'RESOLVED' && c.status !== 'CLOSED');
+                        break;
+                    case 'today':
+                        const today = new Date().toDateString();
+                        filteredComplaints = complaints.filter(c => 
+                            new Date(c.timestamp).toDateString() === today
+                        );
+                        break;
+                    default:
+                        filteredComplaints = complaints;
+                }
+                
+                this.displayComplaints(filteredComplaints);
+            }
+
+            updateStats() {
+                const total = complaints.length;
+                const pending = complaints.filter(c => c.status !== 'RESOLVED' && c.status !== 'CLOSED').length;
+                const critical = complaints.filter(c => c.urgency === 'CRITICAL').length;
+                
+                document.getElementById('totalComplaints').textContent = total;
+                document.getElementById('pendingComplaints').textContent = pending;
+                document.getElementById('criticalComplaints').textContent = critical;
+            }
+
+            timeAgo(timestamp) {
+                const now = new Date();
+                const time = new Date(timestamp);
+                const diffInSeconds = Math.floor((now - time) / 1000);
+                
+                if (diffInSeconds < 60) return `${diffInSeconds}s ago`;
+                if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+                if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+                return `${Math.floor(diffInSeconds / 86400)}d ago`;
+            }
+
+            startRealTimeUpdates() {
+                // WebSocket connection for real-time updates
+                                const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+                const ws = new WebSocket(`${wsProtocol}//${window.location.hostname}:8000/ws/dashboard`);
+                
+                ws.onopen = () => {
+                    console.log('WebSocket connected');
+                    this.showNotification('Connected to real-time updates', 'success');
+                };
+                
+                                ws.onmessage = (event) => {
+                    console.log("WebSocket message received:", event.data);
+
+                    const data = JSON.parse(event.data);
+                    if (data.type === 'new_complaint' || data.type === 'complaint_updated') {
+                        this.showNotification(`Update: ${data.complaint.id} has been ${data.type === 'new_complaint' ? 'created' : 'updated'}.`, 'info');
+                        this.loadComplaints(); // Refresh the list to show the latest data
+                    }
+                };
+                
+                ws.onclose = () => {
+                    console.log('WebSocket disconnected');
+                    this.showNotification('Disconnected from real-time updates', 'warning');
+                };
+            }
+
+            showNotification(message, type = 'success') {
+                const notification = document.getElementById('notification');
+                const notificationText = document.getElementById('notificationText');
+                
+                notificationText.textContent = message;
+                
+                // Set color based on type
+                switch(type) {
+                    case 'error':
+                        notification.style.background = '#ef4444';
+                        break;
+                    case 'warning':
+                        notification.style.background = '#f59e0b';
+                        break;
+                    case 'info':
+                        notification.style.background = '#3b82f6';
+                        break;
+                    default:
+                        notification.style.background = '#10b981';
+                }
+                
+                notification.classList.add('show');
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 4000);
+            }
+        }
+
+        // Modal functions
+                function closeModal() {
+            document.getElementById('responseModal').classList.remove('active');
+        }
+
+        async function submitResponse() {
+            const complaintId = document.getElementById('modalComplaintId').value;
+            const data = {
+                status: document.getElementById('statusUpdate').value,
+                message: document.getElementById('responseMessage').value,
+                estimated_completion: document.getElementById('estimatedCompletion').value || null,
+                department: "Public Works Department", // This would be dynamic
+                officer_name: "Mr. Sharma" // This would be dynamic
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/complaint/${complaintId}/respond`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    dashboard.showNotification('Response sent to citizen successfully!', 'success');
+                    closeModal();
+                    dashboard.loadComplaints(); // Refresh the list
+                } else {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Failed to send response');
+                }
+            } catch (error) {
+                console.error('Error submitting response:', error);
+                dashboard.showNotification(`Error: ${error.message}`, 'error');
+            }
+        }
+
+        function openResponseModal(complaintId) {
+            currentComplaintId = complaintId;
+            const complaint = complaints.find(c => c.id === complaintId);
+            
+            if (complaint) {
+                document.getElementById('modalComplaintId').value = complaint.id;
+                document.getElementById('responseMessage').value = '';
+                document.getElementById('estimatedCompletion').value = '';
+                document.getElementById('responseModal').classList.add('active');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('responseModal').classList.remove('active');
+            currentComplaintId = null;
+        }
+
+        async function submitResponse() {
+            if (!currentComplaintId) return;
+            
+            const status = document.getElementById('statusUpdate').value;
+            const message = document.getElementById('responseMessage').value;
+            const completion = document.getElementById('estimatedCompletion').value;
+            
+            if (!message.trim()) {
+                dashboard.showNotification('Please enter a response message', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/complaint/${currentComplaintId}/respond`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        status: status,
+                        message: message,
+                        estimated_completion: completion || null,
+                        department: 'Public Works Department',
+                        officer_name: 'Department Officer'
+                    })
+                });
+                
+                if (response.ok) {
+                    dashboard.showNotification('Response sent successfully!', 'success');
+                    closeModal();
+                    dashboard.loadComplaints(); // Refresh complaints
+                } else {
+                    throw new Error('Failed to send response');
+                }
+            } catch (error) {
+                console.error('Error sending response:', error);
+                dashboard.showNotification('Failed to send response', 'error');
+            }
+        }
+
+        async function respondToComplaint(complaintId, newStatus) {
+            try {
+                let message = '';
+                switch(newStatus) {
+                    case 'ACKNOWLEDGED':
+                        message = 'Your complaint has been acknowledged. We will review it and take appropriate action.';
+                        break;
+                    case 'IN_PROGRESS':
+                        message = 'Work has started on your complaint. Our team is actively working to resolve the issue.';
+                        break;
+                    case 'RESOLVED':
+                        message = 'Your complaint has been resolved. Thank you for bringing this to our attention.';
+                        break;
+                }
+                
+                const response = await fetch(`${API_BASE}/complaint/${complaintId}/respond`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        status: newStatus,
+                        message: message,
+                        department: 'Public Works Department',
+                        officer_name: 'Department Officer'
+                    })
+                });
+                
+                if (response.ok) {
+                    dashboard.showNotification(`Complaint #${complaintId} ${newStatus.toLowerCase()}!`, 'success');
+                    dashboard.loadComplaints(); // Refresh complaints
+                } else {
+                    throw new Error('Failed to update complaint');
+                }
+            } catch (error) {
+                console.error('Error updating complaint:', error);
+                dashboard.showNotification('Failed to update complaint', 'error');
+            }
+        }
+
+        // Initialize dashboard
+        const dashboard = new GovernmentDashboard();
+
+        // Close modal on outside click
+        document.getElementById('responseModal').addEventListener('click', (e) => {
+            if (e.target.id === 'responseModal') {
+                closeModal();
+            }
+        });
+
+        // Sample data for demonstration (remove when connected to real API)
+        if (complaints.length === 0) {
+            complaints = [
+                {
+                    id: '90ABC302',
+                    text: 'There are large potholes on the main road near the market. It\'s dangerous for vehicles and has already caused several accidents. The road needs immediate repair.',
+                    citizen_name: 'Rajesh Kumar',
+                    phone: '+91-9876543210',
+                    location: 'Karol Bagh, Delhi',
+                    category: 'Road',
+                    urgency: 'CRITICAL',
+                    status: 'ORANGE',
+                    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString() // 2 hours ago
+                },
+                {
+                    id: '89XYZ451',
+                    text: 'Street lights have been non-functional for over a week on MG Road. This is creating safety concerns for pedestrians and vehicle drivers.',
+                    citizen_name: 'Priya Sharma',
+                    phone: '+91-9123456789',
+                    location: 'Lajpat Nagar, Delhi',
+                    category: 'Electricity',
+                    urgency: 'HIGH',
+                    status: 'ORANGE',
+                    timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString() // 5 hours ago
+                },
+                {
+                    id: '78DEF123',
+                    text: 'Water logging issue during monsoon. The drainage system is completely blocked and water accumulates for hours.',
+                    citizen_name: 'Amit Singh',
+                    phone: '+91-9988776655',
+                    location: 'Connaught Place, Delhi',
+                    category: 'Water',
+                    urgency: 'MEDIUM',
+                    status: 'ORANGE',
+                    timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString() // 1 day ago
+                }
+            ];
+            dashboard.displayComplaints(complaints);
+            dashboard.updateStats();
+        }
+    </script>
+</body>
+</html>

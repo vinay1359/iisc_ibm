@@ -1,0 +1,62 @@
+[
+  {
+    "timestamp": "2025-09-14T16:50:53.763508",
+    "category": "Road",
+    "assigned_department": "Unknown",
+    "routing_justification": "Standard mapping for Road category - escalated due to CRITICAL urgency"
+  },
+  {
+    "timestamp": "2025-09-14T16:51:04.575224",
+    "category": "Road",
+    "assigned_department": "Unknown",
+    "routing_justification": "Standard mapping for Road category - escalated due to CRITICAL urgency"
+  },
+  {
+    "timestamp": "2025-09-14T16:51:37.628476",
+    "category": "Electricity",
+    "assigned_department": "Unknown",
+    "routing_justification": "Standard mapping for Electricity category"
+  },
+  {
+    "timestamp": "2025-09-14T16:52:20.815681",
+    "category": "Electricity",
+    "assigned_department": "Unknown",
+    "routing_justification": "Standard mapping for Electricity category"
+  },
+  {
+    "timestamp": "2025-09-14T16:56:33.241158",
+    "category": "Water",
+    "assigned_department": "Unknown",
+    "routing_justification": "Standard mapping for Water category"
+  },
+  {
+    "timestamp": "2025-09-14T16:56:58.715672",
+    "category": "Electricity",
+    "assigned_department": "Unknown",
+    "routing_justification": "Standard mapping for Electricity category"
+  },
+  {
+    "timestamp": "2025-09-14T17:01:43.432920",
+    "category": "Water",
+    "assigned_department": "Unknown",
+    "routing_justification": "Standard mapping for Water category"
+  },
+  {
+    "timestamp": "2025-09-14T17:01:51.656713",
+    "category": "Water",
+    "assigned_department": "Unknown",
+    "routing_justification": "Standard mapping for Water category"
+  },
+  {
+    "timestamp": "2025-09-14T17:04:24.273774",
+    "category": "Electricity",
+    "assigned_department": "Unknown",
+    "routing_justification": "Standard mapping for Electricity category"
+  },
+  {
+    "timestamp": "2025-09-14T17:08:58.727460",
+    "category": "Electricity",
+    "assigned_department": "Unknown",
+    "routing_justification": "Standard mapping for Electricity category"
+  }
+]

@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citizen Voice AI - Chat Interface</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0f0f0f;
+            color: #e5e5e5;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-width: 800px;
+            margin: 0 auto;
+            background: #212121;
+            border-left: 1px solid #404040;
+            border-right: 1px solid #404040;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #404040;
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+        }
+
+        .status-bar {
+            background: #2a2a2a;
+            padding: 10px 20px;
+            border-bottom: 1px solid #404040;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 12px;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #1a1a1a;
+        }
+
+        .message {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 12px;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: messageSlideIn 0.3s ease forwards;
+        }
+
+        @keyframes messageSlideIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .user-avatar {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .ai-avatar {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .gov-avatar {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+        }
+
+        .agent-avatar {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            font-size: 12px;
+        }
+
+        .message-content {
+            flex: 1;
+            background: #2a2a2a;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #404040;
+        }
+
+        .user-message .message-content {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+        }
+
+        .gov-message .message-content {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            border: none;
+        }
+
+        .agent-feed {
+            margin-top: 12px;
+            border-top: 1px solid #404040;
+            padding-top: 12px;
+        }
+
+        .processing-step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .step-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .step-completed {
+            background: #10b981;
+            color: white;
+        }
+
+        .step-processing {
+            background: #f59e0b;
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+
+        .step-details {
+            font-size: 13px;
+        }
+
+        .step-agent {
+            font-weight: 600;
+            color: #e5e5e5;
+        }
+
+        .step-message {
+            color: #9ca3af;
+        }
+
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .agent-name {
+            font-weight: 600;
+            color: #10b981;
+        }
+
+        .timestamp {
+            color: #666;
+            font-size: 11px;
+        }
+
+        .message-text {
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .agent-processing {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 8px;
+        }
+
+        .processing-step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 0;
+            font-size: 13px;
+        }
+
+        .step-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        .step-completed {
+            background: #10b981;
+            color: white;
+        }
+
+        .step-processing {
+            background: #f59e0b;
+            color: white;
+            animation: pulse 1.5s infinite;
+        }
+
+        .step-waiting {
+            background: #64748b;
+            color: white;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            color: #888;
+            font-size: 13px;
+            padding: 8px 0;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 2px;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: #666;
+            border-radius: 50%;
+            animation: typingDot 1.5s infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingDot {
+            0%, 60%, 100% { opacity: 0.3; }
+            30% { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        .input-area {
+            background: #2a2a2a;
+            border-top: 1px solid #404040;
+            padding: 20px;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .input-field {
+            flex: 1;
+            background: #1a1a1a;
+            border: 1px solid #404040;
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: #e5e5e5;
+            resize: none;
+            min-height: 44px;
+            max-height: 120px;
+            font-family: inherit;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .input-field::placeholder {
+            color: #666;
+        }
+
+        .send-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 12px;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: white;
+            font-size: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .send-button:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .quick-action {
+            background: #374151;
+            border: 1px solid #4b5563;
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #d1d5db;
+        }
+
+        .quick-action:hover {
+            background: #4b5563;
+            border-color: #6b7280;
+        }
+
+        .complaint-result {
+            background: linear-gradient(135deg, #064e3b, #065f46);
+            border: 1px solid #10b981;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 8px;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .complaint-id {
+            background: #10b981;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .result-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 12px;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.3);
+            padding: 6px 8px;
+            border-radius: 4px;
+        }
+
+        .detail-label {
+            color: #9ca3af;
+        }
+
+        .detail-value {
+            font-weight: 600;
+            color: #e5e5e5;
+        }
+
+        .scrollbar-thin {
+            scrollbar-width: thin;
+            scrollbar-color: #404040 #2a2a2a;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar-track {
+            background: #2a2a2a;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+            background: #404040;
+            border-radius: 3px;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+            background: #525252;
+        }
+
+        .error-message {
+            background: #7f1d1d;
+            border: 1px solid #dc2626;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 8px;
+            color: #fecaca;
+            font-size: 13px;
+        }
+
+        .government-response {
+            background: linear-gradient(135deg, #065f46, #047857);
+            border: 1px solid #10b981;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 8px;
+        }
+
+        .response-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #d1fae5;
+        }
+
+        .response-status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-solved {
+            background: #10b981;
+            color: white;
+        }
+
+        .status-in-process {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .response-details {
+            display: grid;
+            gap: 6px;
+            font-size: 13px;
+            color: #a7f3d0;
+        }
+
+        .response-detail {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.2);
+            padding: 6px 8px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="header">
+            <h1>🏛️ Citizen Voice AI</h1>
+            <p>Your AI Government Accountability Assistant</p>
+        </div>
+
+        <div class="status-bar">
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span id="backendStatus">Backend: Connected</span>
+            </div>
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span id="agentStatus">Agents: 6 Ready</span>
+            </div>
+            <div class="status-indicator">
+                <div class="status-dot"></div>
+                <span id="complaintsStatus">Processed: 0</span>
+            </div>
+            <div class="status-indicator" id="watsonIndicator" style="display:none;">
+                <div class="status-dot" id="watsonDot"></div>
+                <span id="watsonStatus">Watson: Offline</span>
+            </div>
+            <div class="status-indicator" id="mockIndicator" style="display:none;">
+                <div class="status-dot mock"></div>
+                <span>Watson: Mock Mode</span>
+            </div>
+        </div>
+
+        <div class="chat-messages scrollbar-thin" id="chatMessages">
+            <div class="message">
+                <div class="message-avatar ai-avatar">🤖</div>
+                <div class="message-content">
+                    <div class="message-header">
+                        <span class="agent-name">Citizen Voice AI</span>
+                        <span class="timestamp">Just now</span>
+                    </div>
+                    <div class="message-text">
+                        Welcome! I'm your AI Government Accountability Assistant. I can help you:
+                        <br><br>
+                        • Submit and track government complaints<br>
+                        • Route issues to the right departments<br>
+                        • Monitor progress and send reminders<br>
+                        • Provide analytics and insights<br><br>
+                        Just describe your problem and I'll handle everything automatically!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-area">
+            <div class="quick-actions">
+                <div class="quick-action" onclick="insertQuickComplaint('electricity')">⚡ Electricity Issue</div>
+                <div class="quick-action" onclick="insertQuickComplaint('water')">💧 Water Problem</div>
+                <div class="quick-action" onclick="insertQuickComplaint('road')">🛣️ Road Issue</div>
+                <div class="quick-action" onclick="clearChat()">🗑️ Clear Chat</div>
+            </div>
+            <div class="input-container">
+                <textarea 
+                    class="input-field" 
+                    id="messageInput" 
+                    placeholder="Describe your government complaint or issue..."
+                    rows="1"
+                ></textarea>
+                <button class="send-button" id="sendButton" onclick="sendMessage()">
+                    ➤
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+                const API_BASE = 'http://127.0.0.1:8000/api';
+        let userId = localStorage.getItem('citizen-voice-user-id');
+        if (!userId) {
+            userId = `user-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+            localStorage.setItem('citizen-voice-user-id', userId);
+        }
+        let messageCount = 0;
+    
+        class CitizenVoiceChatApp {
+            constructor() {
+                this.setupEventListeners();
+                this.checkBackendStatus();
+                this.setupWebSocket();
+                this.setupTextareaResize();
+                setInterval(() => this.checkBackendStatus(), 5000);
+            }
+    
+            setupWebSocket() {
+                try {
+                    const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+                    const backendHost = '127.0.0.1:8000';
+                    this.websocket = new WebSocket(`${wsProtocol}//${backendHost}/ws/${userId}`);
+                    this.websocket.onopen = () => this.updateConnectionStatus(true);
+                    this.websocket.onmessage = (event) => this.handleWebSocketMessage(JSON.parse(event.data));
+                    this.websocket.onclose = () => {
+                        this.updateConnectionStatus(false);
+                        setTimeout(() => this.setupWebSocket(), 3000);
+                    };
+                    this.websocket.onerror = () => this.updateConnectionStatus(false);
+                } catch (error) {
+                    console.error("WebSocket connection failed:", error);
+                    this.updateConnectionStatus(false);
+                }
+            }
+    
+            handleWebSocketMessage(data) {
+                if (data.type === 'government_response') {
+                    this.showGovernmentResponse(data);
+                } else if (data.type === 'agent_update') {
+                    this.showAgentUpdate(data);
+                }
+            }
+    
+            showGovernmentResponse(data) {
+                const content = `
+                    <div class="message-header">
+                        <span class="agent-name">Government Response</span>
+                        <span class="timestamp">${this.getTimestamp()}</span>
+                    </div>
+                    <div class="message-text">
+                        A response regarding your complaint <strong>#${data.complaint_id}</strong> has been received:<br><br>
+                        <strong>Status:</strong> ${data.status}<br>
+                        <strong>Department:</strong> ${data.department}<br>
+                        <strong>Officer:</strong> ${data.officer_name}<br>
+                        <strong>Message:</strong> <em>"${this.escapeHtml(data.message)}"</em>
+                    </div>`;
+                this.addMessage(content, 'gov', false, true);
+            }
+
+            showAgentUpdate(data) {
+                let container = document.getElementById(`agent-feed-${data.complaint_id}`);
+                if (!container) {
+                    const messageId = this.addMessage('', 'ai', false, true);
+                    const messageEl = document.getElementById(messageId);
+                    const contentEl = messageEl.querySelector('.message-content');
+                    contentEl.innerHTML = `
+                        <div class="message-header">
+                            <span class="agent-name">AI Agent Processing</span>
+                            <span class="timestamp">${this.getTimestamp()}</span>
+                        </div>
+                        <div class="agent-feed" id="agent-feed-${data.complaint_id}"></div>`;
+                    container = document.getElementById(`agent-feed-${data.complaint_id}`);
+                }
+
+                const stepEl = document.createElement('div');
+                stepEl.className = 'processing-step';
+                stepEl.innerHTML = `
+                    <div class="step-icon ${data.status === 'completed' ? 'step-completed' : 'step-processing'}">${this.getAgentIcon(data.agent)}</div>
+                    <div class="step-details">
+                        <div class="step-agent">${data.agent.replace('_Agent', '')}</div>
+                        <div class="step-message">${this.escapeHtml(data.message)}</div>
+                    </div>
+                `;
+                container.appendChild(stepEl);
+                this.scrollToBottom();
+            }
+
+            getAgentIcon(agentName) {
+                const icons = {
+                    'Chat_Agent': '💬',
+                    'Router_Agent': '🎯',
+                    'Tracker_Agent': '👁️',
+                    'Follow_Agent': '🔔',
+                    'Analytics_Agent': '📊',
+                    'Escalate_Agent': '⚡'
+                };
+                return icons[agentName] || '🤖';
+            }
+    
+            updateConnectionStatus(connected) {
+                const statusEl = document.getElementById('backendStatus');
+                const dotEl = statusEl.previousElementSibling;
+                statusEl.textContent = connected ? 'Backend: Connected' : 'Backend: Disconnected';
+                dotEl.style.background = connected ? '#10b981' : '#ef4444';
+            }
+    
+            async checkBackendStatus() {
+                try {
+                    const response = await fetch(`${API_BASE}/health`);
+                    if (!response.ok) throw new Error('Health check failed');
+                    const data = await response.json();
+                    this.updateConnectionStatus(true);
+                    document.getElementById('agentStatus').textContent = `Agents: ${data.agents_initialized} Ready`;
+                    document.getElementById('complaintsStatus').textContent = `Processed: ${data.total_complaints || 0}`;
+    
+                    const watsonIndicator = document.getElementById('watsonIndicator');
+                    const mockIndicator = document.getElementById('mockIndicator');
+                    if (data.watson_status === 'configured') {
+                        watsonIndicator.style.display = 'flex';
+                        mockIndicator.style.display = 'none';
+                    } else {
+                        watsonIndicator.style.display = 'none';
+                        mockIndicator.style.display = 'flex';
+                    }
+    
+                } catch (error) {
+                    this.updateConnectionStatus(false);
+                }
+            }
+    
+            setupEventListeners() {
+                const input = document.getElementById('messageInput');
+                const sendBtn = document.getElementById('sendButton');
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.sendMessage();
+                    }
+                });
+                input.addEventListener('input', () => { sendBtn.disabled = input.value.trim().length === 0; });
+                sendBtn.disabled = true;
+            }
+    
+            setupTextareaResize() {
+                const textarea = document.getElementById('messageInput');
+                textarea.addEventListener('input', function() {
+                    this.style.height = 'auto';
+                    this.style.height = `${Math.min(this.scrollHeight, 120)}px`;
+                });
+            }
+    
+            async sendMessage() {
+                const input = document.getElementById('messageInput');
+                const message = input.value.trim();
+                if (!message) return;
+    
+                this.addMessage(message, 'user');
+                input.value = '';
+                input.style.height = 'auto';
+                const sendBtn = document.getElementById('sendButton');
+                sendBtn.disabled = true;
+    
+                const thinkingMessageId = this.addMessage('...', 'ai', true);
+    
+                try {
+                    const response = await fetch(`${API_BASE}/chat`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message: message, user_id: userId })
+                    });
+                    if (!response.ok) {
+                        const errData = await response.json();
+                        throw new Error(errData.detail || 'API error');
+                    }
+                    const result = await response.json();
+                    this.updateMessage(thinkingMessageId, result.message.replace(/\\n/g, '<br>'), false, false, true);
+    
+                } catch (error) {
+                    this.updateMessage(thinkingMessageId, `Error: ${error.message}`, false, true);
+                }
+                sendBtn.disabled = false;
+            }
+    
+            addMessage(content, type, isTyping = false, isHtml = false) {
+                const messagesContainer = document.getElementById('chatMessages');
+                const messageId = `message-${++messageCount}`;
+                const avatarClass = { user: 'user-avatar', ai: 'ai-avatar', gov: 'gov-avatar' }[type];
+                const avatarIcon = { user: '👤', ai: '🤖', gov: '🏛️' }[type];
+                const messageClass = type === 'user' ? 'user-message' : (type === 'gov' ? 'gov-message' : '');
+    
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${messageClass}`;
+                messageDiv.id = messageId;
+                messageDiv.innerHTML = `
+                    <div class="message-avatar ${avatarClass}">${avatarIcon}</div>
+                    <div class="message-content">
+                        ${isTyping ? this.getTypingIndicatorHTML() : (isHtml ? content : this.escapeHtml(content))}
+                    </div>`;
+                
+                messagesContainer.appendChild(messageDiv);
+                this.scrollToBottom();
+                return messageId;
+            }
+    
+            updateMessage(messageId, newContent, stopTyping = true, isError = false, isHtml = false) {
+                const messageEl = document.getElementById(messageId);
+                if (messageEl) {
+                    const contentEl = messageEl.querySelector('.message-content');
+                    contentEl.innerHTML = isHtml ? newContent : this.escapeHtml(newContent);
+                    if (isError) {
+                        contentEl.classList.add('error-message');
+                    }
+                }
+            }
+    
+            getTypingIndicatorHTML() {
+                return `
+                    <div class="typing-indicator">
+                        <div class="typing-dots">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>`;
+            }
+            
+            getTimestamp() {
+                return new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            }
+    
+            scrollToBottom() {
+                const el = document.getElementById('chatMessages');
+                el.scrollTop = el.scrollHeight;
+            }
+    
+            escapeHtml(str) {
+                const p = document.createElement('p');
+                p.textContent = str;
+                return p.innerHTML;
+            }
+        }
+    
+        // Global functions for HTML onclick
+        function sendMessage() {
+            window.chatApp.sendMessage();
+        }
+    
+        function insertQuickComplaint(type) {
+            const examples = {
+                'electricity': 'The streetlights in my area have not been working for the past three days.',
+                'water': 'There is a major water leakage on the main road, causing a lot of water wastage.',
+                'road': 'The road in front of my house is full of potholes and needs to be repaired urgently.'
+            };
+            document.getElementById('messageInput').value = examples[type];
+            document.getElementById('sendButton').disabled = false;
+        }
+    
+        function clearChat() {
+            document.getElementById('chatMessages').innerHTML = '';
+            const welcomeMessage = `
+                <div class="message">
+                    <div class="message-avatar ai-avatar">🤖</div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <span class="agent-name">Citizen Voice AI</span>
+                            <span class="timestamp">Just now</span>
+                        </div>
+                        <div class="message-text">
+                            Welcome! I'm your AI Government Accountability Assistant. How can I help you today?
+                        </div>
+                    </div>
+                </div>`;
+            document.getElementById('chatMessages').innerHTML = welcomeMessage;
+        }
+    
+        window.chatApp = new CitizenVoiceChatApp();
+    </script>
+</body>
+</html>
