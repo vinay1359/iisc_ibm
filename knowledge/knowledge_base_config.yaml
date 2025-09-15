@@ -31,7 +31,8 @@ documents:
       description: "Shared memory system for agent communication"
 
 vector_index:
-  embeddings_model_name: "sentence-transformers/all-MiniLM-L6-v2"
+  # Use IBM's supported embedding model
+  embeddings_model_name: "ibm/slate-30m-english-rtrvr"
   retrieval_k: 5
   chunk_size: 1000
   chunk_overlap: 200

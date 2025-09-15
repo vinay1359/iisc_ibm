@@ -61,7 +61,7 @@ def load_data():
     description="Analyzes complaint data for patterns, trends, and insights",
     permission=ToolPermission.READ_ONLY
 )
-def analyze_data(complaints: list = None, analysis_type: str = "summary", filters: dict = None, focus_complaint_id: str = None) -> dict:
+def analyze_data(complaints: list = [], analysis_type: str = "summary", filters: dict = {}, focus_complaint_id: str = "") -> dict:
     """
     Analyze complaint data based on provided parameters.
     
@@ -148,7 +148,7 @@ def analyze_data(complaints: list = None, analysis_type: str = "summary", filter
     if total_complaints > 0:
         # Top category insight
         if categories:
-            top_category = max(categories, key=categories.get)
+            top_category = max(categories, key=lambda k: categories[k])
             insights.append(f"Most complaints are in '{top_category}' category ({categories[top_category]} complaints)")
         
         # Resolution rate insight
@@ -165,7 +165,7 @@ def analyze_data(complaints: list = None, analysis_type: str = "summary", filter
         
         # Department performance
         if departments:
-            busiest_dept = max(departments, key=departments.get)
+            busiest_dept = max(departments, key=lambda k: departments[k])
             insights.append(f"Busiest department: {busiest_dept} ({departments[busiest_dept]} complaints)")
     
     # Focus on specific complaint if provided
