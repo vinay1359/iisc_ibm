@@ -111,6 +111,28 @@ class SharedMemorySystem:
             state = self._load_state()
             return state.get("complaints", {})
     
+    def add_chat_message(self, complaint_id: str, message: str, user_type: str, timestamp: str):
+        """Add a chat message to a complaint"""
+        with self._lock:
+            state = self._load_state()
+            
+            if complaint_id in state["complaints"]:
+                complaint = state["complaints"][complaint_id]
+                if "chat_messages" not in complaint:
+                    complaint["chat_messages"] = []
+                
+                chat_message = {
+                    "message": message,
+                    "user_type": user_type,
+                    "timestamp": timestamp
+                }
+                
+                complaint["chat_messages"].append(chat_message)
+                self._save_state(state)
+                return True
+            
+            return False
+    
     def add_message(self, sender_agent: str, receiver_agent: str, message_type: str, content: Dict):
         """Add a message between agents"""
         with self._lock:
@@ -313,3 +335,6 @@ def update_agent_status(agent_name: str, status: str, metadata: Dict = {}):
 
 def get_system_health() -> Dict:
     return _shared_memory.get_system_health()
+
+def add_chat_message(complaint_id: str, message: str, user_type: str, timestamp: str) -> bool:
+    return _shared_memory.add_chat_message(complaint_id, message, user_type, timestamp)

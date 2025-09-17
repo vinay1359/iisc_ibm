@@ -34,12 +34,19 @@ style: default
 collaborators:
   - Escalate_Agent
 
-import:
-  - knowledge.shared_memory
+knowledge:
+  - name: citizen-voice-kb
+    search_settings:
+      k: 5
+      score_threshold: 0.7
 
 tools:
   - reminder_scheduler
   - deadline_tracker
+
+imports:
+  - module: knowledge.shared_memory
+    alias: sm
 
 on_message:
   - name: follow_up_complaint

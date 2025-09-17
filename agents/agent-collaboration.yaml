@@ -1,0 +1,147 @@
+spec_version: v1
+kind: agent_collaboration
+name: citizen_voice_agent_network
+description: Inter-agent communication configuration for Citizen Voice AI system
+
+# Message bus configuration for agent communication
+message_bus:
+  type: shared_memory
+  backend: file_based
+  persistence: true
+  real_time: true
+  
+  # Message routing configuration
+  routing:
+    enabled: true
+    auto_discovery: true
+    load_balancing: false
+    
+  # Message types and schemas
+  message_types:
+    new_complaint:
+      schema:
+        type: object
+        properties:
+          complaint_id: { type: string }
+          citizen_id: { type: string }
+          timestamp: { type: string }
+        required: [complaint_id]
+        
+    routed_complaint:
+      schema:
+        type: object
+        properties:
+          complaint_id: { type: string }
+          assigned_department: { type: string }
+          deadlines: { type: object }
+        required: [complaint_id, assigned_department]
+        
+    tracked_complaint:
+      schema:
+        type: object
+        properties:
+          complaint_id: { type: string }
+          status: { type: string }
+          tracking_info: { type: object }
+        required: [complaint_id, status]
+        
+    escalation_required:
+      schema:
+        type: object
+        properties:
+          complaint_id: { type: string }
+          reason: { type: string }
+          urgency_level: { type: string }
+        required: [complaint_id, reason]
+
+# Agent network topology
+agents:
+  Chat_Agent:
+    role: entry_point
+    sends_to: [Router_Agent]
+    receives_from: []
+    message_types: [new_complaint]
+    
+  Router_Agent:
+    role: router
+    sends_to: [Tracker_Agent]
+    receives_from: [Chat_Agent]
+    message_types: [routed_complaint]
+    
+  Tracker_Agent:
+    role: coordinator
+    sends_to: [Follow_Agent, Analytics_Agent, Escalate_Agent]
+    receives_from: [Router_Agent]
+    message_types: [tracked_complaint]
+    
+  Follow_Agent:
+    role: follower
+    sends_to: [Escalate_Agent]
+    receives_from: [Tracker_Agent]
+    message_types: [escalation_required]
+    
+  Analytics_Agent:
+    role: analyzer
+    sends_to: []
+    receives_from: [Tracker_Agent]
+    message_types: []
+    
+  Escalate_Agent:
+    role: escalator
+    sends_to: []
+    receives_from: [Tracker_Agent, Follow_Agent]
+    message_types: []
+
+# Collaboration patterns
+collaboration_patterns:
+  sequential_processing:
+    - Chat_Agent -> Router_Agent -> Tracker_Agent
+    
+  parallel_processing:
+    - Tracker_Agent -> [Follow_Agent, Analytics_Agent, Escalate_Agent]
+    
+  conditional_escalation:
+    - Follow_Agent -> Escalate_Agent (when escalation_needed)
+
+# Shared resources
+shared_resources:
+  knowledge_base:
+    name: citizen-voice-kb
+    access_mode: read_write
+    
+  shared_memory:
+    module: knowledge.shared_memory
+    access_mode: read_write
+    
+  tools:
+    manifest: ../tools/tool-manifest.yaml
+    access_mode: read_only
+
+# Monitoring and governance
+governance:
+  message_retention: 7 days
+  performance_monitoring: true
+  error_handling: graceful_degradation
+  
+  deadlock_detection:
+    enabled: true
+    timeout_seconds: 60
+    
+  circuit_breaker:
+    enabled: true
+    failure_threshold: 5
+    recovery_timeout: 30
+
+# Security and access control
+security:
+  authentication: agent_identity
+  authorization: role_based
+  encryption: in_transit
+  
+  access_control:
+    Chat_Agent: [read_citizen_data, write_complaints]
+    Router_Agent: [read_complaints, write_routing]
+    Tracker_Agent: [read_all, write_tracking]
+    Follow_Agent: [read_tracking, write_reminders]
+    Analytics_Agent: [read_all]
+    Escalate_Agent: [read_all, write_escalations]

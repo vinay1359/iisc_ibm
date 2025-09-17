@@ -46,14 +46,15 @@ knowledge:
     search_settings:
       k: 5
       score_threshold: 0.7
-import:
-  - knowledge.shared_memory
-
 tools:
   - language_detector
   - text_classifier
   - urgency_analyzer
 
+imports:
+  - module: knowledge.shared_memory
+    alias: sm
+    
 on_message:
   - name: process_complaint
     description: Process incoming complaint, analyze and store in shared memory, then notify Router_Agent

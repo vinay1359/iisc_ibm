@@ -49,12 +49,19 @@ style: default
 collaborators:
   - Tracker_Agent
 
-import:
-  - knowledge.shared_memory
+knowledge:
+  - name: citizen-voice-kb
+    search_settings:
+      k: 5
+      score_threshold: 0.7
 
 tools:
   - department_mapper
   - deadline_calculator
+
+imports:
+  - module: knowledge.shared_memory
+    alias: sm
 
 on_message:
   - name: route_complaint

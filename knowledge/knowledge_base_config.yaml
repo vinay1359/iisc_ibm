@@ -9,30 +9,62 @@ documents:
     metadata:
       category: "complaint_classification"
       description: "Government service categories and keywords for complaint routing"
+      tags: ["classification", "categories", "routing"]
   - path: "./department-contacts.json"
     type: "json"
     metadata:
       category: "department_info"
       description: "Government department contact information and SLAs"
+      tags: ["departments", "contacts", "sla"]
   - path: "./escalation-hierarchy.json"
     type: "json"
     metadata:
       category: "escalation_rules"
       description: "Escalation hierarchy and authority levels"
+      tags: ["escalation", "hierarchy", "authority"]
   - path: "./government-procedures.md"
     type: "markdown"
     metadata:
       category: "procedures"
       description: "Government procedures and workflows"
-  - path: "./shared_memory.py"
-    type: "python"
-    metadata:
-      category: "agent_memory"
-      description: "Shared memory system for agent communication"
+      tags: ["procedures", "workflows", "government"]
 
 vector_index:
-  # Use IBM's supported embedding model
   embeddings_model_name: "ibm/slate-30m-english-rtrvr"
   retrieval_k: 5
   chunk_size: 1000
   chunk_overlap: 200
+
+# Configuration for shared memory access across agents
+shared_memory:
+  enabled: true
+  persistence: "file"
+  memory_file: "./complaints.json"
+  backup_interval: 300  # 5 minutes
+
+# Access configuration for tools and agents
+access_config:
+  agent_access:
+    - agent: "Chat_Agent"
+      permissions: ["read", "write"]
+      collections: ["complaint_classification", "procedures"]
+    - agent: "Router_Agent"
+      permissions: ["read", "write"]
+      collections: ["department_info", "escalation_rules"]
+    - agent: "Tracker_Agent"
+      permissions: ["read", "write"]
+      collections: ["all"]
+    - agent: "Follow_Agent"
+      permissions: ["read", "write"]
+      collections: ["department_info", "escalation_rules"]
+    - agent: "Escalate_Agent"
+      permissions: ["read", "write"]
+      collections: ["escalation_rules", "department_info"]
+    - agent: "Analytics_Agent"
+      permissions: ["read"]
+      collections: ["all"]
+      
+  tool_access:
+    enabled: true
+    tools_directory: "../tools"
+    shared_memory_module: "shared_memory.py"
