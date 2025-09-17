@@ -1,16 +1,17 @@
-# 🏛️ Citizen Voice AI - Government Accountability System
+#  Citizen Voice AI - Government Accountability System
+# AI Agent That Never Lets Government Ignore You
 
-**Project ID:** `GovAI-2025-CitizenVoice-Vinay-vinay1359`
+**Project ID:** `T3:315-Citizen Voice AI MultiAgent Government Accountability System-vinay-vinayb1021`
 
-**🎯 Complete AI-Powered Government Complaint Processing System with Dual Deployment Modes**
+** Complete AI-Powered Government Complaint Processing System with Dual Deployment Modes**
 
 ---
 
-## 📋 **Project Overview**
+##  **Project Overview**
 
 A comprehensive AI system that automates government complaint processing from citizen submission to resolution tracking. Features 6 intelligent agents working together to ensure transparency, accountability, and efficient resolution of citizen grievances.
 
-### **🤖 6-Agent Workflow:**
+### **  6-Agent Workflow:**
 ```
 Citizen Complaint → Chat Agent → Router Agent → Tracker Agent
                                                     ├→ Follow Agent
@@ -18,7 +19,7 @@ Citizen Complaint → Chat Agent → Router Agent → Tracker Agent
                                                     └→ Escalate Agent
 ```
 
-### **📊 Status Progression:**
+### ** Status Progression:**
 - 🔴 **RED**: New complaint received
 - 🟠 **ORANGE**: Routed to department with deadline
 - 🔵 **BLUE**: Acknowledged by department
@@ -27,21 +28,21 @@ Citizen Complaint → Chat Agent → Router Agent → Tracker Agent
 
 ---
 
-## 🚀 **Dual Deployment Architecture**
+##  **Dual Deployment Architecture**
 
 ### **Mode 1: Standalone FastAPI Demo** 
-✅ **Perfect for:** Development, demos, local testing  
-✅ **Features:** Instant setup, no API keys needed, full web interface  
-✅ **Deployment:** Single command - `python main.py`
+ **Perfect for:** Development, demos, local testing  
+ **Features:** Instant setup, no API keys needed, full web interface  
+**Deployment:** Single command - `python main.py`
 
 ### **Mode 2: IBM Watsonx Orchestrate Production**
-✅ **Perfect for:** Government deployment, enterprise scale  
-✅ **Features:** Professional AI orchestration, cloud scalability  
-✅ **Deployment:** Import ready-made agents, flows, and tools
+**Perfect for:** Government deployment, enterprise scale  
+ **Features:** Professional AI orchestration, cloud scalability  
+ **Deployment:** Import ready-made agents, flows, and tools
 
 ---
 
-## 📋 **Prerequisites**
+##  **Prerequisites**
 
 - **Python 3.9+**
 - **Git** (for cloning repository)
@@ -50,7 +51,7 @@ Citizen Complaint → Chat Agent → Router Agent → Tracker Agent
 
 ---
 
-## 🛠️ **Installation Steps**
+##  **Installation Steps**
 
 ### **1. Clone Repository**
 ```bash
@@ -86,7 +87,7 @@ copy ".env sample" .env
 
 ## 🚀 **Build & Deployment**
 
-### **🎯 Mode 1: FastAPI Standalone Demo**
+### **Mode 1: FastAPI Standalone Demo**
 
 **Quick Start (30 seconds):**
 ```bash
@@ -99,16 +100,16 @@ python main.py
 - **API Documentation:** http://localhost:8000/docs
 
 **Features Available:**
-- ✅ Real-time complaint submission
-- ✅ 6-agent processing simulation
-- ✅ WebSocket live updates
-- ✅ Department routing and tracking
-- ✅ Status progression visualization
-- ✅ Government dashboard for officials
+-  Real-time complaint submission
+-  6-agent processing simulation
+-  WebSocket live updates
+-  Department routing and tracking
+-  Status progression visualization
+-  Government dashboard for officials
 
 ---
 
-### **☁️ Mode 2: IBM Watsonx Orchestrate Production**
+### ** Mode 2: IBM Watsonx Orchestrate Production**
 
 **Prerequisites:**
 - IBM Watsonx Orchestrate account
@@ -161,7 +162,7 @@ orchestrate flows import -f "flows/complaint-processing-flow.py"
 
 ---
 
-## 🎮 **Demo Instructions**
+## **Demo Instructions**
 
 ### **Mode 1 Demo Walkthrough**
 
@@ -169,7 +170,7 @@ orchestrate flows import -f "flows/complaint-processing-flow.py"
    ```bash
    python main.py
    ```
-   Wait for: `✅ Server started on http://localhost:8000`
+   Wait for: ` Server started on http://localhost:8000`
 
 2. **Citizen Interface Demo:**
    - Open: http://localhost:8000
@@ -217,7 +218,7 @@ orchestrate flows import -f "flows/complaint-processing-flow.py"
 
 ---
 
-## 📁 **Project Structure**
+## **Project Structure**
 
 ```
 citizen-voice-ai/
@@ -249,7 +250,7 @@ citizen-voice-ai/
 
 ---
 
-## 🔧 **Configuration**
+## **Configuration**
 
 ### **Environment Variables (.env)**
 ```bash
@@ -260,27 +261,24 @@ WATSON_REGION_CODE=us-south
 WATSON_MODE=auto
 ```
 
-**Note:** Mode 1 works without any API keys or configuration!
-
 ---
+##  **Key Features**
 
-## 🎯 **Key Features**
-
-### **🌟 Citizen Experience**
+### **Citizen Experience**
 - Multilingual complaint submission (English, Hindi, regional languages)
 - Real-time status tracking with visual indicators
 - SMS/Email notifications for updates
 - Community visibility for public complaints
 - Upvoting system for community issues
 
-### **🏛️ Government Experience**
+### **Government Experience**
 - Centralized complaint dashboard
 - Department-wise workload distribution
 - Automated deadline management
 - Escalation alerts and workflows
 - Performance analytics and insights
 
-### **🤖 AI Capabilities**
+### **AI Capabilities**
 - Automatic complaint categorization
 - Department routing based on complaint type
 - Urgency assessment and prioritization
@@ -290,7 +288,7 @@ WATSON_MODE=auto
 
 ---
 
-## 🎬 **Expected Demo Outputs**
+## **Expected Demo Outputs**
 
 ### **Successful Complaint Processing:**
 ```
@@ -314,26 +312,14 @@ WATSON_MODE=auto
 
 ---
 
-## 🚀 **Deployment Options**
+##  **Deployment Options**
 
 ### **Local Development**
 ```bash
 python main.py  # Runs on localhost:8000
 ```
 
-### **Cloud Deployment (Mode 1)**
-- Deploy on AWS/Azure/GCP using Docker
-- Use provided deployment scripts
-- Scale with load balancers
-
-### **Enterprise Deployment (Mode 2)**
-- IBM Watsonx Orchestrate cloud platform
-- Automatic scaling and management
-- Enterprise security and compliance
-
----
-
-## 🐛 **Troubleshooting**
+## **Troubleshooting**
 
 ### **Common Issues:**
 
@@ -355,42 +341,8 @@ netstat -ano | findstr :8000
 
 ---
 
-## 📞 **Support & Contact**
-
-**Submitter Details:**
-- **Name:** Vinay Kumar
-- **Kaggle ID:** vinay1359
-- **Email:** vinu21120@gmail.com
-- **GitHub:** https://github.com/vinay1359
-
-**Project Repository:** https://github.com/vinay1359/citizen-voice-ai
-
----
-
-## 📄 **License**
+## **License**
 
 MIT License - Open for educational and government use
 
 ---
-
-## 🎉 **Ready to Use!**
-
-**For Quick Demo:** Just run `python main.py` and visit http://localhost:8000
-
-**For Production:** Import agents into IBM Watsonx Orchestrate and deploy!
-
-**🌟 Your complete AI Government Accountability System is ready in under 5 minutes!**
-
----
-
-## 🏆 **Why This Project Stands Out**
-
-✅ **Dual-Mode Architecture** - Works standalone AND enterprise  
-✅ **Real AI Agent Collaboration** - 6 agents working together  
-✅ **Government-Ready** - Built for actual government deployment  
-✅ **Complete Solution** - From citizen interface to official dashboard  
-✅ **Instant Demo** - Working system in one command  
-✅ **Production Ready** - IBM Watsonx components included  
-✅ **Open Source** - Available for educational and government use  
-
-**This is not just a demo - it's a complete government accountability platform ready for real-world deployment! 🚀**
