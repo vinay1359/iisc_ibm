@@ -41,14 +41,21 @@ style: default
 collaborators:
   - Follow_Agent
 
-import:
-  - knowledge.shared_memory
+knowledge:
+  - name: citizen-voice-kb
+    search_settings:
+      k: 5
+      score_threshold: 0.7
 
 tools:
   - status_monitor
   - deadline_tracker
   - data_analyzer
   - urgency_analyzer
+
+imports:
+  - module: knowledge.shared_memory
+    alias: sm
 
 on_message:
   - name: track_complaint
