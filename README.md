@@ -1,5 +1,4 @@
-#  Citizen Voice AI - Government Accountability System
-# AI Agent That Never Lets Government Ignore You
+#  Citizen Voice AI - Government Accountability System AI Agent That Never Lets Government Ignore You
 
 **Project ID:** `T3:315-Citizen Voice AI MultiAgent Government Accountability System-vinay-vinayb1021`
 
@@ -11,7 +10,7 @@
 
 A comprehensive AI system that automates government complaint processing from citizen submission to resolution tracking. Features 6 intelligent agents working together to ensure transparency, accountability, and efficient resolution of citizen grievances.
 
-### **  6-Agent Workflow:**
+###  **6-Agent Workflow:**
 ```
 Citizen Complaint → Chat Agent → Router Agent → Tracker Agent
                                                     ├→ Follow Agent
@@ -19,7 +18,7 @@ Citizen Complaint → Chat Agent → Router Agent → Tracker Agent
                                                     └→ Escalate Agent
 ```
 
-### ** Status Progression:**
+### **Status Progression:**
 - 🔴 **RED**: New complaint received
 - 🟠 **ORANGE**: Routed to department with deadline
 - 🔵 **BLUE**: Acknowledged by department
@@ -85,7 +84,7 @@ copy ".env sample" .env
 
 ---
 
-## 🚀 **Build & Deployment**
+##  **Build & Deployment**
 
 ### **Mode 1: FastAPI Standalone Demo**
 
@@ -109,7 +108,7 @@ python main.py
 
 ---
 
-### ** Mode 2: IBM Watsonx Orchestrate Production**
+### **Mode 2: IBM Watsonx Orchestrate Production**
 
 **Prerequisites:**
 - IBM Watsonx Orchestrate account
